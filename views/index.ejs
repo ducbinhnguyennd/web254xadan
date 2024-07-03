@@ -110,7 +110,8 @@
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">13 PRO MAX</h1>
-                                    <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Chế độ cho phép thiết bị lấy nét cực nhanh mỗi khi thay đổi các góc quay và chủ thể. Bên cạnh đó, Cinematic Mode sẽ tự động điều chỉnh lấy nét giúp người dùng dễ dàng căn chỉnh khung hình khi thực hiện các thao tác điều chỉnh khác.</p>
+                                    <p class="mx-md-5 px-5 animate__animated animate__bounceIn">Chế độ cho phép thiết bị lấy nét cực nhanh mỗi khi thay đổi các góc quay và chủ thể. Bên cạnh đó, Cinematic Mode sẽ tự động điều chỉnh lấy nét giúp người dùng dễ dàng căn chỉnh khung hình khi thực hiện các thao tác
+                                        điều chỉnh khác.</p>
                                     <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Mua Ngay</a>
                                 </div>
                             </div>
@@ -120,7 +121,8 @@
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">12 PRO MAX</h1>
-                                    <p class="mx-md-5 px-5 animate__animated animate__bounceIn">iPhone 12 Pro Max là phiên bản điện thoại cao cấp nhất trong cả 4 chiếc iPhone 12. Không chỉ vậy dòng iphone này còn là phiên bản nâng cấp của iPhone 11 có vô vàn những chức năng được nâng cấp hơn. Dưới đây là một vài chức năng nổi trội mà không thể không nhắc đến khi nói về chiếc iPhone 12 Pro Max này.</p>
+                                    <p class="mx-md-5 px-5 animate__animated animate__bounceIn">iPhone 12 Pro Max là phiên bản điện thoại cao cấp nhất trong cả 4 chiếc iPhone 12. Không chỉ vậy dòng iphone này còn là phiên bản nâng cấp của iPhone 11 có vô vàn những chức năng được nâng cấp hơn. Dưới đây là một vài
+                                        chức năng nổi trội mà không thể không nhắc đến khi nói về chiếc iPhone 12 Pro Max này.</p>
                                     <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Mua Ngay</a>
                                 </div>
                             </div>
@@ -151,7 +153,7 @@
     <!-- Carousel End -->
 
 
-    <!-- Featured Start --> 
+    <!-- Featured Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
@@ -187,12 +189,12 @@
     <div class="container-fluid pt-5">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
         <div class="row px-xl-5 pb-3">
-            <% allsp.forEach((row, index)=> { %>
+            <% sp.forEach((row, index)=> { %>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                     <a class="text-decoration-none" href="">
                         <div class="cat-item d-flex align-items-center mb-4">
                             <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                                <img class="img-fluid" src="img/iphone.jpg" alt="">
+                                <img class="img-fluid" src="<%= row.img %>" alt="">
                             </div>
                             <div class="flex-fill pl-3">
                                 <h6>
@@ -214,7 +216,7 @@
         <div class="container-fluid pt-5 pb-3">
             <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3"><%= row.name1 %></span></h2>
             <div class="row px-xl-5">
-                <% row.chitietsp1.slice(0, 8).forEach((item, index)=> { %>
+                <% row.chitietsp1.slice(0, 4).forEach((item, index)=> { %>
 
                     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
@@ -290,7 +292,7 @@
                 <div class="container-fluid pt-5 pb-3">
                     <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3"><%= row.name %></span></h2>
                     <div class="row px-xl-5">
-                        <% row.chitietsp.slice(0, 8).forEach((item, index)=> { %>
+                        <% row.chitietsp.slice(0, 4).forEach((item, index)=> { %>
 
                             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                                 <div class="product-item bg-light mb-4">
