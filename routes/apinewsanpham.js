@@ -97,22 +97,48 @@ router.get('/', async(req, res) => {
         const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
         const danhgia = await DanhGia.danhgia.find()
 
-        const tenspjson = await Promise.all(allsp.map(async(tensp) => {
-            const chitietspJson = await Promise.all(tensp.chitietsp.map(async(chitietsp) => {
+
+        const tenspjson2 = await Promise.all(allsp.map(async(tensp) => {
+            if (tensp.name === "iPhone 13 Pro Max" || tensp.name === "iPhone 14 Pro Max") {
+                const chitietspJson = await Promise.all(tensp.chitietsp.map(async(chitietsp) => {
+                    return {
+                        id: chitietsp._id,
+                        name: chitietsp.name,
+                        noidung: chitietsp.content,
+                        price: chitietsp.price,
+                        image: chitietsp.image
+                    }
+                }));
                 return {
-                    id: chitietsp._id,
-                    name: chitietsp.name,
-                    noidung: chitietsp.content,
-                    price: chitietsp.price,
-                    image: chitietsp.image
-                }
-            }));
-            return {
-                id: tensp._id,
-                name: tensp.name,
-                chitietsp: chitietspJson
-            };
-        }));
+                    id: tensp._id,
+                    name: tensp.name,
+                    somay: tensp.chitietsp.length,
+                    chitietsp: chitietspJson
+                };
+            }
+            return null; // Trả về null nếu không thỏa mãn điều kiện
+        })).then(results => results.filter(result => result !== null)); // Lọc các phần tử null
+
+        const tenspjson1 = await Promise.all(allsp.map(async(tensp) => {
+            if (tensp.name === "iPhone 12 Pro Max" || tensp.name === "iPhone 11 Pro Max") {
+                const chitietspJson1 = await Promise.all(tensp.chitietsp.map(async(chitietsp) => {
+                    return {
+                        id: chitietsp._id,
+                        name: chitietsp.name,
+                        noidung: chitietsp.content,
+                        price: chitietsp.price,
+                        image: chitietsp.image
+                    };
+                }));
+                return {
+                    id1: tensp._id,
+                    name1: tensp.name,
+                    somay1: tensp.chitietsp.length,
+                    chitietsp1: chitietspJson1
+                };
+            }
+            return null; // Trả về null nếu không thỏa mãn điều kiện
+        })).then(results => results.filter(result => result !== null)); // Lọc các phần tử null
 
         const danhgiaIsReadTrue = danhgia.filter(d => d.isRead === true)
             .map(d => ({
@@ -121,7 +147,8 @@ router.get('/', async(req, res) => {
                 content: d.content,
                 rating: d.rating,
             }));
-        res.render('index', { tenspjson, listBl, danhgiaIsReadTrue });
+
+        res.render('index', { allsp, tenspjson1, tenspjson2, listBl, danhgiaIsReadTrue });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
