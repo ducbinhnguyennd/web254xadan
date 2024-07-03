@@ -97,6 +97,26 @@ router.get('/', async(req, res) => {
         const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
         const danhgia = await DanhGia.danhgia.find()
 
+        const sp = await Promise.all(allsp.map(async(s) => {
+            let img;
+            if (s.name === "iPhone 13 Pro Max") {
+                img = '/img/iphone13.png'
+            }
+            if (s.name === "iPhone 12 Pro Max") {
+                img = '/img/iphone12.jpg'
+            }
+            if (s.name === "iPhone 14 Pro Max") {
+                img = '/img/iphone14.png'
+            }
+            if (s.name === "iPhone 11 Pro Max") {
+                img = '/img/iphone11.jpg'
+            }
+            return {
+                id: s._id,
+                name: s.name,
+                img: img
+            }
+        }))
 
         const tenspjson2 = await Promise.all(allsp.map(async(tensp) => {
             if (tensp.name === "iPhone 13 Pro Max" || tensp.name === "iPhone 14 Pro Max") {
@@ -148,7 +168,7 @@ router.get('/', async(req, res) => {
                 rating: d.rating,
             }));
 
-        res.render('index', { allsp, tenspjson1, tenspjson2, listBl, danhgiaIsReadTrue });
+        res.render('index', { allsp, tenspjson1, tenspjson2, listBl, danhgiaIsReadTrue, sp });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
