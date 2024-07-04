@@ -856,6 +856,8 @@ router.get('/contentBlog/:tieude', async(req, res) => {
     try {
         const tieude_blog = decodeURIComponent(req.params.tieude).replace(/-/g, ' ');
         const blog = await myMDBlog.blogModel.findOne({ tieude_blog });
+        const allsp = await LoaiSP.TenSP.find().populate('chitietsp');
+
 
         if (!blog) {
             return res.status(404).json({ message: 'Blog không tồn tại' });
@@ -871,7 +873,7 @@ router.get('/contentBlog/:tieude', async(req, res) => {
             }
         })
 
-        res.render('chitietblog', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog })
+        res.render('test', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog, allsp })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });

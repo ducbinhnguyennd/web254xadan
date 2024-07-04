@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="https://www.baominhmobile.com//css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://www.baominhmobile.com//css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:w*ght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -334,66 +335,7 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid d-flex">
 
-        <section id="latest-blog" class="section1 flex-fill">
-            <div class="container">
-                <div class="row">
-                    <div class="display-header d-flex justify-content-between pb-3">
-                        <h5 class="display-7 text-dark text-uppercase">Các bài viết liên quan</h5>
-                        <div class="btn-right">
-                            <a href="/getblog" class="btn btn-medium btn-normal text-uppercase">ĐỌC THÊM</a>
-                        </div>
-                    </div>
-                    <div class="post-grid d-flex flex-column">
-                        <% listBl.forEach((item) => { %>
-                            <div class="col-lg-12 col-sm-12 mb-3">
-                                <div class="card border-none">
-                                    <div class="card-image justify-content-center align-items-center text-center">
-                                        <img src="<%= item.img_blog %>" alt="product-item" class="img-fluid">
-                                    </div>
-                                    <div class="card-body text-uppercase" style="word-wrap: break-word">
-                                        <h5 class="card-title">
-                                            <a href="/contentBlog/<%= encodeURIComponent(item.tieude_blog).replace(/%20/g, '-')%>">
-                                                <%= item.tieude_blog %>
-                                            </a>
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <% }); %>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="selling-product" class="section flex-fill" style="word-wrap: break-word">
-            <h3 itemprop="name" class="display-7 text-uppercase" style="font-weight: bold;">
-                <%= tieude %>
-            </h3>
-            <div class="container mb-4 pb-4">
-                <div>
-                    <% content.splice(0.5).forEach((item) => { %>
-                        <div class="mb-4">
-                            <h6 itemprop="name" class="display-7 text-uppercase" style="font-weight: bold;">
-                                <%= item.tieude %>
-                            </h6>
-                            <p style="color: black">
-                                <%- item.content.replace(/\\n/g, "<br>") %>
-                            </p>
-                            <% if (item.img) { %>
-                                <div class="product-preview mb-3 d-flex justify-content-center">
-                                    <img src="<%= item.img %>" class="sanpham" alt="product image">
-
-                                </div>
-                                <% } %>
-                        </div>
-                        <% }); %>
-                </div>
-            </div>
-            <a class="btn tn-medium btn-danger text-center mb-3" href="/">Mua Iphone Chính Hãng Tại Bảo Minh Store</a>
-        </section>
-
-    </div>
     <section id="subscribe" class="container-grid position-relative overflow-hidden">
         <div class="container">
             <div class="row">
@@ -419,151 +361,12 @@
         </div>
     </section>
 
-    <footer id="footer" class="overflow-hidden">
-        <div class="container">
-            <div class="row">
-                <div class="footer-top-area">
-                    <div class="row d-flex flex-wrap justify-content-between">
-                        <div class="col-lg-3 col-sm-6 pb-3">
-                            <div class="footer-menu">
-                                <img src="https://www.baominhmobile.com/images/main-logo.png" class="logo">
-                                <p> Chúng tôi tin rằng bạn sẽ yêu thích điện thoại này ngay từ lần đầu tiên bạn cầm nó vào tay. Hãy đến cửa hàng của chúng tôi để trải nghiệm sản phẩm này và cùng chúng tôi khám phá thế giới công nghệ mới mẻ!
-                                </p>
-                                <div class="social-links">
-                                    <ul class="d-flex list-unstyled">
-                                        <li>
-                                            <a href="#">
-                                                <svg class="facebook">
-                                                    <use xlink:href="#facebook" />
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <svg class="instagram">
-                                                    <use xlink:href="#instagram" />
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <svg class="twitter">
-                                                    <use xlink:href="#twitter" />
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <svg class="linkedin">
-                                                    <use xlink:href="#linkedin" />
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <svg class="youtube">
-                                                    <use xlink:href="#youtube" />
-                                                </svg>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-sm-6 pb-3">
-                            <div class="footer-menu text-uppercase">
-                                <h5 class="widget-title pb-2">Đường dẫn nhanh</h5>
-                                <ul class="menu-list list-unstyled text-uppercase">
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Trang Chủ</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Thông Tin</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Cửa hàng</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Blogs</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Liên Hệ</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 pb-3">
-                            <div class="footer-menu text-uppercase">
-                                <h5 class="widget-title pb-2">Trợ giúp & Thông tin Trợ giúp</h5>
-                                <ul class="menu-list list-unstyled">
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Theo dõi đơn hàng của bạn</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Chính sách hoàn trả</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Liên hệ chúng tôi</a>
-                                    </li>
-                                    <li class="menu-item pb-2">
-                                        <a href="#">Câu hỏi thường gặp</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 pb-3">
-                            <div class="footer-menu contact-item">
-                                <h5 class="widget-title text-uppercase pb-2">Liên hệ chúng tôi</h5>
-                                <p>Bạn có bất kỳ thắc mắc hoặc gợi ý nào không?<a href="mailto:">baominhstore354@gmail.com</a>
-                                </p>
-                                <p>Nếu bạn cần hỗ trợ? Hãy gọi cho chúng tôi. <a href="">+0816 354 354</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-    </footer>
-    <div id="footer-bottom">
-        <div class="container">
-            <div class="row d-flex flex-wrap justify-content-between">
-                <div class="col-md-4 col-sm-6">
-                    <div class="Shipping d-flex">
-                        <p>Chúng tôi giao với:</p>
-                        <div class="card-wrap ps-2">
-                            <img src="https://www.baominhmobile.com/images/dhl.png" alt="visa">
-                            <img src="https://www.baominhmobile.com/images/shippingcard.png" alt="mastercard">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="payment-method d-flex">
-                        <p>Các phương thức thanh toán:</p>
-                        <div class="card-wrap ps-2">
-                            <img src="https://www.baominhmobile.com/images/visa.jpg" alt="visa">
-                            <img src="https://www.baominhmobile.com/images/mastercard.jpg" alt="mastercard">
-                            <img src="https://www.baominhmobile.com/images/paypal.jpg" alt="paypal">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="copyright">
-                        <p>© Copyright 2023 Bảo Minh Store
-                            <a href="https://templatesjungle.com/"></a>
-
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="https://www.baominhmobile.com//js/jquery-1.11.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-    <script type="text/javascript" src="https://www.baominhmobile.com//js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://www.baominhmobile.com//js/plugins.js"></script>
-    <script type="text/javascript" src="https://www.baominhmobile.com//js/script.js"></script>
+    <%- include('footer') %>
+        <script src="https://www.baominhmobile.com//js/jquery-1.11.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+        <script type="text/javascript" src="https://www.baominhmobile.com//js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="https://www.baominhmobile.com//js/plugins.js"></script>
+        <script type="text/javascript" src="https://www.baominhmobile.com//js/script.js"></script>
 </body>
 
 </html>
