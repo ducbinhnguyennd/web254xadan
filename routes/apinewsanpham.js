@@ -873,7 +873,7 @@ router.get('/contentBlog/:tieude', async(req, res) => {
             }
         })
 
-        res.render('test', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog, allsp })
+        res.render('chitietblog', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog, allsp })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
