@@ -296,6 +296,10 @@ router.get('/getchitiet/:namesp/:nameloai', async(req, res) => {
         const namesp = req.params.namesp.replace(/-/g, ' ');
         const nameloai = req.params.nameloai.replace(/-/g, ' ');
         const sp = await Sp.ChitietSp.findOne({ name: namesp });
+        const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
+
+        const allsp = await LoaiSP.TenSP.find().populate('chitietsp');
+
         if (!sp) {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
@@ -330,7 +334,7 @@ router.get('/getchitiet/:namesp/:nameloai', async(req, res) => {
             mangloai: mangloai
         };
         // res.json(mangjson)
-        res.render('detail', { mangjson })
+        res.render('detail', { mangjson, allsp, listBl })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });

@@ -39,7 +39,7 @@
                 <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                     <div class="navbar-nav w-100">
                         <% allsp.forEach((row, index)=> { %>
-                            <a href="" class="nav-item nav-link">
+                            <a href="/getspchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>" class="nav-item nav-link">
                                 <%= row.name %>
                             </a>
                             <% }) %>
@@ -57,15 +57,15 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link active">TRANG CHỦ</a>
-                            <a href="shop.html" class="nav-item nav-link">SỬA CHỮA</a>
-                            <a href="detail.html" class="nav-item nav-link">SẢN PHẨM</a>
+                            <a href="/" class="nav-item nav-link active">TRANG CHỦ</a>
+                            <a href="/" class="nav-item nav-link">SỬA CHỮA</a>
+                            <a href="/" class="nav-item nav-link">SẢN PHẨM</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">THÔNG TIN <i class="fa fa-angle-down mt-1"></i></a>
                                 <div class="dropdown-menu bg-primary1 rounded-0 border-0 m-0">
-                                    <a href="cart.html" class="dropdown-item">GIỎ HÀNG</a>
-                                    <a href="cart.html" class="dropdown-item">LIÊN HỆ</a>
-                                    <a href="checkout.html" class="dropdown-item">LOGIN</a>
+                                    <a href="/" class="dropdown-item">GIỎ HÀNG</a>
+                                    <a href="/" class="dropdown-item">LIÊN HỆ</a>
+                                    <a href="/" class="dropdown-item">LOGIN</a>
                                 </div>
                             </div>
                         </div>

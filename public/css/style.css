@@ -10040,3 +10040,9 @@
                 transform: translateY(-15px);
             }
         }
+        
+        #collapsedContent {
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            /* Hiệu ứng transition */
+        }
