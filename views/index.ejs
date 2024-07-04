@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                           
+
                             <a href="" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
@@ -187,11 +187,11 @@
 
     <!-- Categories Start -->
     <div class="container-fluid pt-5">
-        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
+        <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
         <div class="row px-xl-5 pb-3">
             <% sp.forEach((row, index)=> { %>
                 <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <a class="text-decoration-none" href="">
+                    <a class="text-decoration-none" href="/getspchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>">
                         <div class="cat-item d-flex align-items-center mb-4">
                             <div class="overflow-hidden" style="width: 100px; height: 100px;">
                                 <img class="img-fluid" src="<%= row.img %>" alt="">
@@ -214,42 +214,46 @@
     <% tenspjson1.forEach((row, index)=> { %>
 
         <div class="container-fluid pt-5 pb-3">
-            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3"><%= row.name1 %></span></h2>
+            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4 d-flex align-items-center">
+                <span class="bg-secondary pr-1" style="margin-right: 5px;"><%= row.name1 %></span>
+                <a href="/getspchitiet/<%= encodeURIComponent(row.name1).replace(/%20/g, '-') %>" class="ml-auto" style="color: black;">Xem Thêm</a>
+            </h2>
             <div class="row px-xl-5">
                 <% row.chitietsp1.slice(0, 4).forEach((item, index)=> { %>
+                    <% var rowname=row.name1; %>
 
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                        <div class="product-item bg-light mb-4">
-                            <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
-                                <img class="img-fluid w-80 " src="data:image/jpeg;base64, <%= item.image %>" alt="">
-                                <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
+                                    <img class="img-fluid w-80 " src="data:image/jpeg;base64, <%= item.image %>" alt="">
+                                    <div class="product-action">
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-bars"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href="">
-                                    <%= item.name %>
-                                </a>
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5>
-                                        <%= item.price %>
-                                    </h5>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star-half-alt text-primary mr-1"></small>
-                                    <small>(95)</small>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="">
+                                        <%= item.name %>
+                                    </a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>
+                                            <%= item.price %>
+                                        </h5>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                        <small>(95)</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <% }) %>
+                        <% }) %>
 
             </div>
         </div>
@@ -290,42 +294,45 @@
             <% tenspjson2.forEach((row, index)=> { %>
 
                 <div class="container-fluid pt-5 pb-3">
-                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3"><%= row.name %></span></h2>
+                    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4 d-flex align-items-center">
+                        <span class="bg-secondary pr-1" style="margin-right: 5px;"><%= row.name %></span>
+                        <a href="/getspchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>" class="ml-auto" style="color: black;">Xem Thêm</a>
+                    </h2>
                     <div class="row px-xl-5">
                         <% row.chitietsp.slice(0, 4).forEach((item, index)=> { %>
-
-                            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                                <div class="product-item bg-light mb-4">
-                                    <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
-                                        <img class="img-fluid w-80" src="data:image/jpeg;base64, <%= item.image %>" alt="">
-                                        <div class="product-action">
-                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            <% var rowname=row.name; %>
+                                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                                    <div class="product-item bg-light mb-4">
+                                        <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
+                                            <img class="img-fluid w-80" src="data:image/jpeg;base64, <%= item.image %>" alt="">
+                                            <div class="product-action">
+                                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-bars"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="text-center py-4">
-                                        <a class="h6 text-decoration-none text-truncate" href="">
-                                            <%= item.name %>
-                                        </a>
-                                        <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <h5>
-                                                <%= item.price %>
-                                            </h5>
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-center mb-1">
-                                            <small class="fa fa-star text-primary mr-1"></small>
-                                            <small class="fa fa-star text-primary mr-1"></small>
-                                            <small class="fa fa-star text-primary mr-1"></small>
-                                            <small class="fa fa-star text-primary mr-1"></small>
-                                            <small class="fa fa-star-half-alt text-primary mr-1"></small>
-                                            <small>(95)</small>
+                                        <div class="text-center py-4">
+                                            <a class="h6 text-decoration-none text-truncate" href="">
+                                                <%= item.name %>
+                                            </a>
+                                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                                <h5>
+                                                    <%= item.price %>
+                                                </h5>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                                <small>(95)</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <% }) %>
+                                <% }) %>
 
                     </div>
                 </div>
@@ -392,7 +399,7 @@
                                             <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-4 mb-5">
                                         <h5 class="text-secondary text-uppercase mb-4">Newsletter</h5>
                                         <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
