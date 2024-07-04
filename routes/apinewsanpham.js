@@ -248,9 +248,30 @@ router.get('/getspchitiet/:nameloaisp', async(req, res) => {
     try {
         const nameloaisp = req.params.nameloaisp.replace(/-/g, ' ');
         const loaisp = await LoaiSP.TenSP.findOne({ name: nameloaisp });
+        const allsp = await LoaiSP.TenSP.find().populate('chitietsp');
         if (!loaisp) {
             return res.status(404).json({ message: 'Không tìm thấy loại sản phẩm' });
         }
+        const sp = await Promise.all(allsp.map(async(s) => {
+            let img;
+            if (s.name === "iPhone 13 Pro Max") {
+                img = '/img/iphone13.png'
+            }
+            if (s.name === "iPhone 12 Pro Max") {
+                img = '/img/iphone12.jpg'
+            }
+            if (s.name === "iPhone 14 Pro Max") {
+                img = '/img/iphone14.png'
+            }
+            if (s.name === "iPhone 11 Pro Max") {
+                img = '/img/iphone11.jpg'
+            }
+            return {
+                id: s._id,
+                name: s.name,
+                img: img
+            }
+        }))
 
         const chitiet = await Promise.all(loaisp.chitietsp.map(async(ct) => {
             const chitietsp = await Sp.ChitietSp.findById(ct._id);
@@ -262,7 +283,7 @@ router.get('/getspchitiet/:nameloaisp', async(req, res) => {
                 price: chitietsp.price
             }
         }))
-        res.render('home/shop.ejs', { chitiet, nameloaisp })
+        res.render('full', { chitiet, nameloaisp, allsp, sp })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -309,7 +330,7 @@ router.get('/getchitiet/:namesp/:nameloai', async(req, res) => {
             mangloai: mangloai
         };
         // res.json(mangjson)
-        res.render('home/single-product.ejs', { mangjson })
+        res.render('detail', { mangjson })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -892,7 +913,7 @@ router.get('/cart', async(req, res) => {
 router.get('/checkout', async(req, res) => {
     res.render('checkout')
 })
-router.get('/contact', async(req, res) => {
+router.get('/contact1', async(req, res) => {
     res.render('contact')
 })
 router.get('/detail', async(req, res) => {
