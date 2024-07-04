@@ -26,15 +26,13 @@
     <link href="http://localhost:3000/css/style.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-color: rgb(245, 245, 245);">
 
     <!-- Navbar Start -->
     <%- include('header') %>
 
-        <div class="container-fluid d-flex">
-
-
-            <section id="selling-product" class="section flex-fill" style="word-wrap: break-word">
+        <div class="container-fluid d-flex w-100" style="background-color: rgb(245, 245, 245);">
+            <section id="selling-product" class="section flex-fill w-100" style="word-wrap: break-word; padding-left: 5%; padding-right: 5%; padding-top: 2%; background-color: rgb(255, 255, 255); border-radius: 20px;">
                 <div class="text-center">
                     <h3 itemprop="name" class="display-7 text-uppercase" style="font-weight: bold;">
                         <%= tieude %>
@@ -69,7 +67,7 @@
         </div>
 
         <div class="container-fluid py-3">
-            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-1">Blog</span></h2>
+            <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-1">Blog</span></h2>
             <div class="row px-xl-5">
                 <div class="col">
                     <div class="owl-carousel vendor-carousel">
