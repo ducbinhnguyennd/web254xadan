@@ -871,7 +871,7 @@ router.get('/contentBlog/:tieude', async(req, res) => {
             }
         })
 
-        res.render('home/chitietblog.ejs', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog })
+        res.render('chitietblog', { content, tieude: blog.tieude_blog, listBl, image_blog: blog.img_blog })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -904,7 +904,7 @@ router.get('/getaddblog', async(req, res) => {
 router.get('/getblog', async(req, res) => {
     try {
         const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
-        res.render('home/blog.ejs', { listBl })
+        res.render('blog', { listBl })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });

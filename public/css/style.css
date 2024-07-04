@@ -10041,8 +10041,10 @@
             }
         }
         
-        #collapsedContent {
+        #content p.collapsed {
             overflow: hidden;
+            max-height: 100px;
+            /* Chiều cao tối đa khi thu gọn */
             transition: max-height 0.5s ease;
             /* Hiệu ứng transition */
         }

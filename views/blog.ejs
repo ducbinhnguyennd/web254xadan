@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GIA HUY MOBILE</title>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="w8EqMC0tywLwLb7tQHtpOo506Dl-99uo2BkzYLiPDxo" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="Giới Thiệu" content="">
+    <link rel="shortcut icon" type="x-icon" href="https://www.baominhmobile.com/images/banner-image1.png">
+    <link rel="stylesheet" type="text/css" href="https://www.baominhmobile.com/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://www.baominhmobile.com/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- script
+    ================================================== -->
+    <script src="https://www.baominhmobile.com/js/modernizr.js"></script>
+    <style>
+        @media only screen and (max-width: 700px) {
+            .section {
+                width: 90%;
+                padding-top: 22%;
+                padding-left: 1%;
+                padding-right: 1%;
+                background-color: rgb(245, 247, 249);
+                margin-right: 5%;
+                margin-left: 6%;
+                border-radius: 5px;
+                margin-bottom: 1%
+            }
+            .section1 {
+                width: 90%;
+                padding-top: 5%;
+                padding-left: 1%;
+                padding-right: 1%;
+                background-color: rgb(245, 247, 249);
+                margin-right: 5%;
+                margin-left: 6%;
+                border-radius: 5px;
+                margin-bottom: 1%
+            }
+            body {
+                background-color: rgb(11, 10, 10)
+            }
+            .product-preview {
+                align-items: center;
+                justify-content: center;
+            }
+            .sanpham {
+                width: 45%;
+                height: 45%;
+            }
+            #subscribe {
+                margin-left: 2%;
+                margin-bottom: 1%;
+            }
+            #footer {
+                background-color: aliceblue;
+                color: black;
+            }
+            #footer-bottom {
+                background-color: aliceblue;
+                color: black;
+            }
+            #img-fluid {
+                height: 200px;
+            }
+        }
+        
+        @media only screen and (min-width: 701px) {
+            .section {
+                width: 90%;
+                padding-top: 8%;
+                padding-left: 1%;
+                padding-right: 1%;
+                background-color: rgb(245, 247, 249);
+                margin-right: 5%;
+                margin-left: 6%;
+                border-radius: 5px;
+                margin-bottom: 1%
+            }
+            .section1 {
+                width: 30%;
+                padding-top: 5%;
+                padding-left: 1%;
+                padding-right: 1%;
+                background-color: rgb(245, 247, 249);
+                margin-right: 5%;
+                margin-left: 6%;
+                border-radius: 5px;
+                margin-bottom: 1%
+            }
+            body {
+                background-color: rgb(255, 255, 255)
+            }
+            .product-preview {
+                align-items: center;
+                justify-content: center;
+            }
+            .sanpham {
+                width: 50%;
+                height: 50%;
+            }
+            #subscribe {
+                margin-left: 2%;
+                margin-bottom: 1%;
+            }
+            #footer {
+                background-color: aliceblue;
+                color: black;
+                padding-top: 3%;
+            }
+            #footer-bottom {
+                background-color: aliceblue;
+                color: black;
+            }
+            #img-fluid {
+                height: 200px;
+            }
+            .card-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    
+
+    <%- include('header') %>
+
+
+    <div class="container-fluid mb-3">
+    <section id="latest-blog" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="post-grid d-flex flex-wrap justify-content-between">
+                    <% listBl.forEach((item)=> { %>
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="card border-none me-3">
+                                <div class="card-image text-center overflow-hidden">
+                                    <img src="<%= item.img_blog %>" alt="product-item" id="img-fluid">
+                                </div>
+                            </div>
+                            <div class="card-body text-uppercase" style="word-wrap: break-word">
+                                <h3 class="card-title">
+                                    <a href="/contentBlog/<%= encodeURIComponent(item.tieude_blog).replace(/%20/g, '-')%>">
+                                        <%= item.tieude_blog %>
+                                    </a>
+                                </h3>
+                            </div>
+                        </div>
+                        <% }); %>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+   
+
+    <%- include('footer') %>
+    <script src="/js/jquery-1.11.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/js/plugins.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
+</body>
+
+</html>
