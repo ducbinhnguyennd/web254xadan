@@ -47,6 +47,10 @@ function makeCall() {
         window.location.href = "tel:" + phoneNumber;
     }
 }
+
+function mess() {
+    window.location.href = "https://www.facebook.com/messages/t/111039721823629";
+}
 document.addEventListener("DOMContentLoaded", function() {
     var content = document.getElementById("content");
     var paragraph = content.querySelector("p");
