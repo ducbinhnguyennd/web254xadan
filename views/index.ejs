@@ -18,6 +18,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
+
     <!-- Libraries Stylesheet -->
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
@@ -173,10 +174,10 @@
                                 <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
                                     <img class="img-fluid w-80 " src="data:image/jpeg;base64, <%= item.image %>" alt="">
                                     <div class="product-action">
-                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                        <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                        <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-bars"></i></a>
-                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629"><i class="fab fa-facebook-messenger"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""  onclick="makeCall(event)"><i class="fa fa-phone"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-exclamation-circle"></i></a>
+                                        
                                     </div>
                                 </div>
                                 <div class="text-center py-4">
@@ -252,10 +253,10 @@
                                         <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
                                             <img class="img-fluid w-80" src="data:image/jpeg;base64, <%= item.image %>" alt="">
                                             <div class="product-action">
-                                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                                <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-bars"></i></a>
-                                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629"><i class="fab fa-facebook-messenger"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-phone"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>"><i class="fa fa-exclamation-circle"></i></a>
+                                                
                                             </div>
                                         </div>
                                         <div class="text-center py-4">
@@ -288,7 +289,7 @@
 
                     <!-- Vendor Start -->
                     <div class="container-fluid py-3">
-                        <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Blog</span></h2>
+                        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Blog</span></h2>
                         <div class="row px-xl-5">
                             <div class="col">
                                 <div class="owl-carousel vendor-carousel">
@@ -330,6 +331,31 @@
 
                         <!-- Template Javascript -->
                         <script src="js/main.js"></script>
+                        <script>
+                            function makeCall(event) {
+                                event.preventDefault();
+                                // Thay đổi số điện thoại dưới đây bằng số điện thoại thực tế
+                                var phoneNumber = "0833354354";
+                        
+                                // Kiểm tra xem trình duyệt có hỗ trợ gọi điện không
+                                if ("contacts" in navigator && "ContactsManager" in window) {
+                                    // Sử dụng API Contacts để gọi điện
+                                    navigator.contacts.select(["phone"]).then(contacts => {
+                                        // Gọi điện đến số điện thoại đã được chỉ định
+                                        contacts.forEach(contact => {
+                                            contact.phoneNumbers.forEach(phone => {
+                                                if (phone.value === phoneNumber) {
+                                                    contact.pick();
+                                                }
+                                            });
+                                        });
+                                    });
+                                } else {
+                                    // Mở giao diện gọi điện của trình duyệt
+                                    window.location.href = "tel:" + phoneNumber;
+                                }
+                            }
+                        </script>
 </body>
 
 </html>
