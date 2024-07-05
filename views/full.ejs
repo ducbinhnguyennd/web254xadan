@@ -30,132 +30,133 @@
 
     <%- include('header') %>
 
-    <!-- Categories Start -->
-    <div class="container-fluid pt-5">
-        <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
-        <div class="row px-xl-5 pb-3">
-            <% sp.forEach((row, index)=> { %>
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <a class="text-decoration-none" href="/getspchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>">
-                        <div class="cat-item d-flex align-items-center mb-4">
-                            <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                                <img class="img-fluid" src="<%= row.img %>" alt="">
+        <!-- Categories Start -->
+        <div class="container-fluid pt-5">
+            <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
+            <div class="row px-xl-5 pb-3">
+                <% sp.forEach((row, index)=> { %>
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <a class="text-decoration-none" href="/getspchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>">
+                            <div class="cat-item d-flex align-items-center mb-4">
+                                <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                                    <img class="img-fluid" src="<%= row.img %>" alt="">
+                                </div>
+                                <div class="flex-fill pl-3">
+                                    <h6>
+                                        <%= row.name %>
+                                    </h6>
+                                    <small class="text-body"><%= row.somay %> Products</small>
+                                </div>
                             </div>
-                            <div class="flex-fill pl-3">
-                                <h6>
+                        </a>
+                    </div>
+                    <% }) %>
+
+            </div>
+        </div>
+        <!-- Categories End -->
+
+
+        <div class="container-fluid pt-5 pb-3">
+            <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4 d-flex align-items-center">
+                <span class="bg-secondary pr-1" style="margin-right: 5px;"><%= nameloaisp %></span>
+            </h2>
+            <div class="row px-xl-5">
+                <% chitiet.forEach((row, index)=> { %>
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
+                                <img class="img-fluid w-80 " src="data:image/jpeg;base64, <%= row.image %>" alt="">
+                                <div class="product-action">
+                                    <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629"><i class="fab fa-facebook-messenger"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="" onclick="makeCall()"><i class="fa fa-phone"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(nameloaisp).replace(/%20/g, '-') %>"><i class="fa fa-exclamation-circle"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(nameloaisp).replace(/%20/g, '-') %>  ">
                                     <%= row.name %>
-                                </h6>
-                                <small class="text-body"><%= row.somay %> Products</small>
+                                </a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5>
+                                        <%= row.price %>
+                                    </h5>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                                    <small>(95)</small>
+                                </div>
                             </div>
                         </div>
-                    </a>
-                </div>
-                <% }) %>
-
+                    </div>
+                    <% }) %>
+            </div>
         </div>
-    </div>
-    <!-- Categories End -->
 
 
-    <div class="container-fluid pt-5 pb-3">
-        <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4 d-flex align-items-center">
-            <span class="bg-secondary pr-1" style="margin-right: 5px;"><%= nameloaisp %></span>
-        </h2>
-        <div class="row px-xl-5">
-            <% chitiet.forEach((row, index)=> { %>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden justify-content-center align-items-center text-center">
-                            <img class="img-fluid w-80 " src="data:image/jpeg;base64, <%= row.image %>" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(nameloaisp).replace(/%20/g, '-') %>"><i class="fa fa-bars"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
-                            </div>
+        <!-- Products End -->
+        <!-- Vendor Start -->
+        <div class="container-fluid py-5">
+            <div class="row px-xl-5">
+                <div class="col">
+                    <div class="owl-carousel vendor-carousel">
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-1.jpg" alt="">
                         </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="">
-                                <%= row.name %>
-                            </a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>
-                                    <%= row.price %>
-                                </h5>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star-half-alt text-primary mr-1"></small>
-                                <small>(95)</small>
-                            </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-2.jpg" alt="">
                         </div>
-                    </div>
-                </div>
-                <% }) %>
-        </div>
-    </div>
-
-
-    <!-- Products End -->
-    <!-- Vendor Start -->
-    <div class="container-fluid py-5">
-        <div class="row px-xl-5">
-            <div class="col">
-                <div class="owl-carousel vendor-carousel">
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-1.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-2.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-3.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-4.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-5.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-6.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-7.jpg" alt="">
-                    </div>
-                    <div class="bg-light p-4">
-                        <img src="img/vendor-8.jpg" alt="">
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-3.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-4.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-5.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-6.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-7.jpg" alt="">
+                        </div>
+                        <div class="bg-light p-4">
+                            <img src="img/vendor-8.jpg" alt="">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Vendor End -->
+        <!-- Vendor End -->
 
 
-    <%- include('footer') %>
+        <%- include('footer') %>
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-        <script src="lib/easing/easing.min.js"></script>
-        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-        <!-- Contact Javascript File -->
-        <script src="mail/jqBootstrapValidation.min.js"></script>
-        <script src="mail/contact.js"></script>
+            <!-- JavaScript Libraries -->
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+            <script src="lib/easing/easing.min.js"></script>
+            <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="js/main.js"></script>
+            <!-- Contact Javascript File -->
+            <script src="mail/jqBootstrapValidation.min.js"></script>
+            <script src="mail/contact.js"></script>
+
+            <!-- Template Javascript -->
+            <script src="js/main.js"></script>
+            <script src="http://localhost:3000/js/jsdetail.js "></script>
 </body>
 
 </html>

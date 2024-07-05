@@ -10026,7 +10026,7 @@
         .back-to-top {
             position: fixed;
             display: none;
-            right: 30px;
+            left: 30px;
             bottom: 30px;
             z-index: 11;
             animation: action 1s infinite alternate;
@@ -10047,4 +10047,37 @@
             /* Chiều cao tối đa khi thu gọn */
             transition: max-height 0.5s ease;
             /* Hiệu ứng transition */
+        }
+        
+        .sticky-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            /* Đảm bảo các nút luôn hiển thị trên các nội dung khác */
+        }
+        
+        .anhfacezalo {
+            width: 56%;
+            height: 56%;
+            margin-top: 20%;
+            animation: shake 1s infinite alternate;
+            /* Sử dụng animation với tên 'shake', thời gian 0.5s, lặp lại vô hạn và chuyển động xen kẽ */
+            transform-origin: center;
+            /* Đặt điểm xoay tại trung tâm của ảnh */
+        }
+        
+        @keyframes shake {
+            0% {
+                transform: rotate(-10deg);
+                /* Góc xoay ban đầu */
+            }
+            50% {
+                transform: rotate(10deg);
+                /* Góc xoay giữa chừng */
+            }
+            100% {
+                transform: rotate(-10deg);
+                /* Góc xoay kết thúc */
+            }
         }
