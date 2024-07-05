@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <title>MultiShop - Online Shop Website Template</title>
+    <title>GIA HUY MOBILE - 254 XÃ ĐÀN</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <link rel="shortcut icon" type="x-icon" href="http://localhost:3000/img/LOGOVIEN.png">
 
     <!-- Favicon -->
     <link href="http://localhost:3000/img/favicon.ico" rel="icon">
@@ -93,21 +94,8 @@
                             </form>
                         </div>
                         <div class="d-flex align-items-center mb-4 pt-2">
-                            <div class="input-group quantity mr-3" style="width: 130px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary btn-minus">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                                </div>
-                                <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-primary btn-plus">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart</button>
+                            <button class="btn btn-primary px-1 mr-3" style="height: 60px; width: 300px; border-radius: 20px;" onclick="mess()">Nhắn tin Trực tiếp với Fanpage ngay bây giờ để đặt hàng</button>
+                            <button class="btn btn-primary1 px-1" style="height: 60px; width: 300px;border-radius: 20px;" onclick="makeCall()">Gọi điện Trực tiếp cho Cửa hàng để đặt hàng</button>
                         </div>
 
                     </div>
@@ -238,7 +226,7 @@
 
         <!-- Products Start -->
         <div class="container-fluid py-3" style="padding-left: 2%; padding-right: 2%;">
-            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Blog</span></h2>
+            <h2 class="section-title1 position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Blog</span></h2>
             <div class="row px-xl-5">
                 <div class="col">
                     <div class="owl-carousel related-carousel">
@@ -272,6 +260,10 @@
 
             <!-- Back to Top -->
             <a href="# " class="btn btn-primary back-to-top "><i class="fa fa-angle-double-up "></i></a>
+            <div class="sticky-buttons">
+                <a href="https://www.facebook.com/messages/t/111039721823629" class="btn btn-square mb-5"><img class="anhfacezalo" id="fanpageButton" src="http://localhost:3000/img/mess.png" alt=""></a>
+                <a href="#" class="btn btn-square mb-5" onclick="makeCall()"> <img class="anhfacezalo" src="http://localhost:3000/img/phone2.png" alt=""></a>
+            </div>
 
 
             <!-- JavaScript Libraries -->
