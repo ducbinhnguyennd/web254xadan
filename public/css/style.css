@@ -10058,9 +10058,9 @@
         }
         
         .anhfacezalo {
-            width: 56%;
-            height: 56%;
-            margin-top: 20%;
+            width: 150%;
+            height: 150%;
+            margin-top: 50%;
             animation: shake 1s infinite alternate;
             /* Sử dụng animation với tên 'shake', thời gian 0.5s, lặp lại vô hạn và chuyển động xen kẽ */
             transform-origin: center;
