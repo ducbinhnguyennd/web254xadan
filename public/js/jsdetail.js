@@ -24,12 +24,35 @@ document.querySelectorAll('.inputloai').forEach(item => {
     });
 });
 
+function makeCall() {
+    event.preventDefault();
+    // Thay đổi số điện thoại dưới đây bằng số điện thoại thực tế
+    var phoneNumber = "0833354354";
+
+    // Kiểm tra xem trình duyệt có hỗ trợ gọi điện không
+    if ("contacts" in navigator && "ContactsManager" in window) {
+        // Sử dụng API Contacts để gọi điện
+        navigator.contacts.select(["phone"]).then(contacts => {
+            // Gọi điện đến số điện thoại đã được chỉ định
+            contacts.forEach(contact => {
+                contact.phoneNumbers.forEach(phone => {
+                    if (phone.value === phoneNumber) {
+                        contact.pick();
+                    }
+                });
+            });
+        });
+    } else {
+        // Mở giao diện gọi điện của trình duyệt
+        window.location.href = "tel:" + phoneNumber;
+    }
+}
 document.addEventListener("DOMContentLoaded", function() {
     var content = document.getElementById("content");
     var paragraph = content.querySelector("p");
     var toggleButton = content.querySelector("#toggleButton");
 
-    // Thu gọn nội dung ban đầu
+
     paragraph.classList.add("collapsed");
 
     toggleButton.addEventListener("click", function(e) {
