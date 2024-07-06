@@ -27,7 +27,7 @@ document.querySelectorAll('.inputloai').forEach(item => {
 function makeCall() {
     event.preventDefault();
     // Thay đổi số điện thoại dưới đây bằng số điện thoại thực tế
-    var phoneNumber = "0833354354";
+    var phoneNumber = "0827254254";
 
     // Kiểm tra xem trình duyệt có hỗ trợ gọi điện không
     if ("contacts" in navigator && "ContactsManager" in window) {
