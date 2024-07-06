@@ -1,8 +1,8 @@
-<%- include('../include/header.ejs') %>
+<%- include('headerman.ejs') %>
 
     <div class="container">
-        <h3><a href="/main"><img style="width: 30px;" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"></a> Cập
-            nhật sản phẩm</h3>
+        <h3>
+            <a href="/main"><img style="width: 30px;" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"></a> Cập nhật sản phẩm</h3>
 
         <form action="/updatechitietsp/<%= sp._id %>" method="post">
             <form class="px-4 py-3">
