@@ -19,7 +19,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 router.get('/mess', async(req, res) => {
-    res.render('home/test.ejs')
+    res.render('test')
 })
 router.post('/postloaisp', async(req, res) => {
     try {
@@ -50,7 +50,7 @@ router.get('/editloaisp/:id', async(req, res) => {
     try {
         const id = req.params.id;
         const tensp = await LoaiSP.TenSP.findById(id);
-        res.render("home/editloaisp.ejs", { tensp });
+        res.render("editloaisp", { tensp });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -60,7 +60,7 @@ router.get('/editloaisp/:id', async(req, res) => {
 
 router.get('/addloaisp', async(req, res) => {
     try {
-        res.render("home/addloaisp.ejs");
+        res.render("addloaisp");
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -71,7 +71,7 @@ router.get('/addloaisp', async(req, res) => {
 router.get('/addsp/:idloaisp', async(req, res) => {
     try {
         const idloaisp = req.params.idloaisp;
-        res.render("home/add.ejs", { idloaisp });
+        res.render("add", { idloaisp });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -85,7 +85,7 @@ router.get('/main', checkAuth, async(req, res) => {
         let listloai = await LoaiSP.TenSP.find()
         let listblog = await myMDBlog.blogModel.find()
         const loailinhkien = await LoaiLinkKien.loailinkkien.find()
-        res.render("home/home.ejs", { listloai, listblog, loailinhkien });
+        res.render("home", { listloai, listblog, loailinhkien });
     } catch (error) {
         console.log(`lỗi: ${error}`)
     }
@@ -235,7 +235,7 @@ router.get('/getchitietsp/:idloaisp', async(req, res) => {
                 price: chitietsp.price
             }
         }))
-        res.render('home/chitietsp.ejs', { chitiet, idloaisp })
+        res.render('chitietsp', { chitiet, idloaisp })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -390,7 +390,7 @@ router.get('/geteditloaichitiet/:chitietspid/:id', async(req, res) => {
             price: chitietsp.chitiet[index].price
         }
 
-        res.render('home/editloaichitiet.ejs', { chitietspid, id, json })
+        res.render('editloaichitiet', { chitietspid, id, json })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -417,7 +417,7 @@ router.post('/deleteloaichitiet/:chitietspid/:id', async(req, res) => {
 router.get('/getaddloaichitiet/:chitietspid', async(req, res) => {
     try {
         const chitietspid = req.params.chitietspid;
-        res.render('home/addloaichitiet.ejs', { chitietspid })
+        res.render('addloaichitiet', { chitietspid })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -440,7 +440,7 @@ router.get('/getloaichitiet/:idsp', async(req, res) => {
         }));
 
         // res.json(mangjson)
-        res.render('home/loaichitietsp.ejs', { mangloai, idsp })
+        res.render('loaichitietsp', { mangloai, idsp })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -494,7 +494,7 @@ router.get('/editsp/:id', async(req, res) => {
     try {
         const id = req.params.id;
         const sp = await Sp.ChitietSp.findById(id);
-        res.render("home/edit.ejs", { sp });
+        res.render("edit", { sp });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -521,7 +521,7 @@ router.get('/suachua', async(req, res) => {
             };
         }));
         // res.json(loailinhkienjson)
-        res.render('home/linkkien.ejs', { loailinhkienjson })
+        res.render('linkkien', { loailinhkienjson })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -550,7 +550,7 @@ router.post('/postlinkkien/:idloailinkkien', upload.single('image'), async(req, 
 router.get('/addlinhkien/:id', async(req, res) => {
     try {
         const id = req.params.id;
-        res.render('home/addlinhkien.ejs', { id })
+        res.render('addlinhkien', { id })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -561,7 +561,7 @@ router.get('/editlinhkien/:id', async(req, res) => {
     try {
         const id = req.params.id;
         const linhkien = await LinkKien.linkkien.findById(id);
-        res.render('home/editlinhkien.ejs', { linhkien, id });
+        res.render('editlinhkien', { linhkien, id });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -643,7 +643,7 @@ router.post('/deleteloailk/:id', async(req, res) => {
 
 router.get('/addloailk', async(req, res) => {
     try {
-        res.render('home/addloailinhkien.ejs');
+        res.render('addloailinhkien');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -654,7 +654,7 @@ router.get('/editloailk/:id', async(req, res) => {
     try {
         const id = req.params.id;
         const loailinhkien = await LoaiLinkKien.loailinkkien.findById(id);
-        res.render('home/editloailinhkien.ejs', { id, loailinhkien });
+        res.render('editloailinhkien', { id, loailinhkien });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -675,7 +675,7 @@ router.get('/linhkien/:id', async(req, res) => {
                 loai: linhkien.loai
             }
         }))
-        res.render('home/linhkienmain.ejs', { linhkienjson, id })
+        res.render('linhkienmain', { linhkienjson, id })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -696,7 +696,7 @@ router.get('/xemlinhkien/:id', async(req, res) => {
                 loai: linhkien.loai
             }
         }))
-        res.render('home/xemlinhkien.ejs', { linhkienjson, id })
+        res.render('xemlinhkien', { linhkienjson, id })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -712,7 +712,7 @@ router.get('/muangay/:idsp', async(req, res) => {
             name: sp.name,
             price: sp.price
         }
-        res.render('home/formmua.ejs', { spjson });
+        res.render('formmua', { spjson });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -778,7 +778,7 @@ router.get('/donhang', async(req, res) => {
                 date: moment(d.date).format('DD/MM/YYYY HH:mm:ss')
             }));
 
-        res.render('home/donhang.ejs', {
+        res.render('donhang', {
             donHangIsReadTrue,
             donHangIsReadFalse
         });
@@ -828,7 +828,7 @@ router.get('/getdanhgia', async(req, res) => {
                 date: moment(d.date).format('DD/MM/YYYY HH:mm:ss')
             }));
 
-        res.render('home/danhgia.ejs', {
+        res.render('danhgia', {
             danhgiaIsReadTrue,
             danhgiaIsReadFalse
         });
@@ -900,7 +900,7 @@ router.post('/postblog', async(req, res) => {
 })
 
 router.get('/getaddblog', async(req, res) => {
-    res.render('home/addblog.ejs');
+    res.render('addblog');
 })
 
 router.get('/getblog', async(req, res) => {

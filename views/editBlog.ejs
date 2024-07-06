@@ -1,0 +1,25 @@
+<%- include('headerman.ejs') %>
+
+    <div class="container">
+        <h3>
+            <a href="/main"><img style="width: 30px;" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"></a>Sửa Blog
+        </h3>
+
+        <form action="/home/editBlog/<%= objSP._id %>" method="post" enctype="multipart/form-data">
+            <div class="px-4 py-3">
+                <div class="mb-3">
+                    <label for="formFileMultiple" class="form-label">Ảnh blog</label>
+                    <input class="form-control" type="file" name="img_blog" id="formFileMultiple" multiple>
+                </div>
+
+                <label class="form-label">Tiêu đề</label>
+                <input type="text" name="tieude_blog" class="form-control" value="<%=objSP.tieude_blog %>"><br>
+
+                <label class="form-label">Nội dung</label>
+                <textarea name="noidung_blog" class="form-control" rows="10"><%=objSP.noidung_blog %></textarea><br>
+
+                <button type="submit" class="btn btn-danger">Cập nhật</button>
+                <%= msg %>
+            </div>
+        </form>
+    </div>
