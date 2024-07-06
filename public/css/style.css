@@ -4146,7 +4146,7 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            padding: 0.5rem 1rem;
+            padding: 2%;
         }
         
         .navbar .container,
@@ -4207,7 +4207,7 @@
         }
         
         .navbar-toggler {
-            padding: 0.25rem 0.75rem;
+            padding: 2%;
             font-size: 1.25rem;
             line-height: 1;
             background-color: transparent;
