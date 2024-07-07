@@ -13,7 +13,15 @@ var bodyParser = require("body-parser");
 const { log } = require('console');
 const app = express();
 const MongoStore = require('connect-mongo');
+const { MongoClient } = require('mongodb');
+const util = require('util');
 var db = require('./models/db');
+const redis = require('redis');
+const redisClient = redis.createClient();
+redisClient.getAsync = util.promisify(redisClient.get).bind(redisClient);
+redisClient.setAsync = util.promisify(redisClient.set).bind(redisClient);
+redisClient.keysAsync = util.promisify(redisClient.keys).bind(redisClient);
+redisClient.delAsync = util.promisify(redisClient.del).bind(redisClient);
 const uri = "mongodb+srv://ducbinhnguyennd:ducbinhnguyennd@cluster0.geuahvt.mongodb.net/giahuystore?retryWrites=true&w=majority";
 
 const mongoStoreOptions = {
@@ -21,6 +29,15 @@ const mongoStoreOptions = {
     mongoUrl: uri,
     collection: 'sessions',
 };
+
+MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+    if (err) {
+        console.error('Failed to connect to MongoDB', err);
+        process.exit(1);
+    }
+    db = client.db('giahuystore');
+    console.log('Connected to MongoDB');
+});
 
 // app.set('view engine', 'ejs'); 
 // view engine setup
