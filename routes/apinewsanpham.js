@@ -13,21 +13,6 @@ const DanhGia = require('../models/DanhGiaModel');
 const { linkSync } = require('fs');
 const moment = require('moment');
 const momenttimezone = require('moment-timezone');
-const redis = require('redis');
-const cache = require('express-redis-cache')({ client: redis.createClient() });
-const redisClient = redis.createClient();
-// Xử lý lỗi Redis
-cache.on('connected', () => {
-    console.log('Connected to Redis');
-});
-
-cache.on('disconnected', () => {
-    console.log('Disconnected from Redis');
-});
-
-cache.on('error', (error) => {
-    console.error('Redis Error:', error);
-});
 
 const storage = multer.memoryStorage();
 
@@ -942,6 +927,9 @@ router.get('/detail', async(req, res) => {
 
 router.get('/clear-cache', async(req, res) => {
     try {
+        if (!redisClient.isOpen) {
+            redisClient.connect();
+        }
         const keys = await redisClient.keys('express-redis-cache:*');
         if (keys.length === 0) {
             return res.send({ message: 'No cache keys found' });
