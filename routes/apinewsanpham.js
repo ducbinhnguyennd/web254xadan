@@ -983,4 +983,7 @@ router.get('/contact1', async(req, res) => {
 router.get('/detail', async(req, res) => {
     res.render('detail')
 })
+router.get('/test', async(req, res) => {
+    res.render('test')
+})
 module.exports = router;
