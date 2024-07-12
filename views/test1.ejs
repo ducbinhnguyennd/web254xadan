@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <style>
+        #reader {
+            width: 600px;
+            height: 400px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="reader"></div>
+    <div id="result"></div>
+
+    <script>
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.getElementById("reader"),
+            },
+            decoder: {
+                readers: ["ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader"],
+            },
+        }, (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            Quagga.start();
+        });
+
+        Quagga.onDetected((data) => {
+            document.getElementById('result').innerHTML = `Mã vạch quét được: ${data.codeResult.code}`;
+        });
+    </script>
+</body>
+
+</html>
