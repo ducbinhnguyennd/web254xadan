@@ -915,7 +915,7 @@ router.get('/editblog/:idblog', async(req, res) => {
     try {
         const idblog = req.params.idblog;
         const blog = await myMDBlog.blogModel.findById(idblog);
-        res.render('editblog', {
+        res.render('editBlog', {
             blog
         })
     } catch (error) {
