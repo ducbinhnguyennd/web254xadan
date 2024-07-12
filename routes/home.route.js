@@ -14,9 +14,9 @@ router.get('/addblog', homeController.addblog);
 router.post('/addblog', uploader.single('image'), homeController.addblog);
 router.post('/addblog2', homeController.addJsonBlog);
 
-router.get('/home/editBlog/:idblog', homeController.editBlog);
-router.post('/home/editBlog/:idblog', uploader.single('image'), homeController.editBlog);
-router.put('/home/editBlog2/:idblog', homeController.editBlogJson);
+router.get('/editBlog/:idblog', homeController.editBlog);
+router.post('/editBlog/:idblog', uploader.single('image'), homeController.editBlog);
+router.put('/editBlog2/:idblog', homeController.editBlogJson);
 
 router.get('/home/deleteBlog/:idblog', homeController.deleteBlog);
 router.post('/home/deleteBlog/:idblog', homeController.deleteBlog);
