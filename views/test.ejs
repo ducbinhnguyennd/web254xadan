@@ -31,6 +31,7 @@
     <script>
         function onScanSuccess(decodedText, decodedResult) {
             document.getElementById('result').innerHTML = `<p>Code scanned = ${decodedText},${decodedResult}</p>`
+            document.getElementById('qr-reader').style.display = 'none'
         }
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", {
