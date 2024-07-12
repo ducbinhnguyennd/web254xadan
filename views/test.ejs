@@ -85,7 +85,9 @@
 
         }
         html5Qrcode.start({
-            facingMode: "environment",
+            facingMode: {
+                exact: "environment" // Sử dụng camera sau
+            },
             config,
             onScanSuccess
         });
