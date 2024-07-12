@@ -934,13 +934,8 @@ router.post('/editblog/:idblog', async(req, res) => {
 
         if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
             blog.noidung.forEach((nd, index) => {
-                if (content[index]) {
-                    nd.content = content[index];
-                }
-                if (img[index]) {
-                    nd.img = img[index];
-                }
-
+                nd.content = content[index];
+                nd.img = img[index];
                 nd.tieude = tieude[index];
 
             });
