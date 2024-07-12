@@ -75,7 +75,14 @@
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader", {
                 fps: 120,
-                qrbox: 250,
+                qrbox: {
+                    width: {
+                        ideal: 1280
+                    }, // Độ rộng video
+                    height: {
+                        ideal: 720
+                    }
+                },
                 facingMode: {
                     exact: "environment"
                 }, // Sử dụng camera sau
