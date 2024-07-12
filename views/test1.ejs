@@ -1,44 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barcode Scanner</title>
+    <title>Quét Mã Vạch</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
     <style>
-        #reader {
-            width: 600px;
-            height: 400px;
-            border: 1px solid black;
+        #interactive {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+        
+        #camera {
+            width: 100%;
+            height: auto;
+            border: 1px solid #000;
         }
     </style>
 </head>
 
 <body>
-    <div id="reader"></div>
+    <div id="interactive">
+        <div id="camera"></div>
+    </div>
     <div id="result"></div>
 
     <script>
+        // Khởi tạo QuaggaJS
         Quagga.init({
             inputStream: {
                 name: "Live",
                 type: "LiveStream",
-                target: document.getElementById("reader"),
+                target: document.querySelector('#camera'), // Chọn phần tử hiển thị camera
             },
             decoder: {
-                readers: ["ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader"],
-            },
-        }, (err) => {
+                readers: ["code_128_reader", "ean_reader", "ean_8_reader", "upc_reader", "code_39_reader"]
+            }
+        }, function(err) {
             if (err) {
                 console.error(err);
                 return;
             }
-            Quagga.start();
+            console.log("QuaggaJS đã khởi tạo thành công!");
+            Quagga.start(); // Bắt đầu quét
         });
 
-        Quagga.onDetected((data) => {
-            document.getElementById('result').innerHTML = `Mã vạch quét được: ${data.codeResult.code}`;
+        // Lắng nghe sự kiện khi quét thành công
+        Quagga.onDetected(function(data) {
+            document.getElementById('result').innerHTML = `
+                <p>Mã vạch quét được: ${data.codeResult.code}</p>
+                <p>Loại: ${data.codeResult.format}</p>
+            `;
+            // Dừng quét sau khi quét thành công
+            Quagga.stop();
         });
     </script>
 </body>
