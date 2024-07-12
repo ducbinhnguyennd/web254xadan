@@ -14,7 +14,6 @@ const { linkSync } = require('fs');
 const moment = require('moment');
 const momenttimezone = require('moment-timezone');
 
-
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
@@ -989,5 +988,4 @@ router.get('/contact1', async(req, res) => {
 router.get('/detail', async(req, res) => {
     res.render('detail')
 })
-
 module.exports = router;

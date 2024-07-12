@@ -32,8 +32,6 @@ app.use(session({
         // ,cookie: { secure: true }
 }))
 
-
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
