@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Scanner</title>
-    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <script src="./qrScript.js"></script>
     <style>
         body,
         html {
@@ -69,28 +68,27 @@
 
     <script>
         function onScanSuccess(decodedText, decodedResult) {
-            document.getElementById('result').innerHTML = `<p>Code scanned = ${decodedText},${decodedResult}</p>`
-            document.getElementById('qr-reader').style.display = 'none'
-        }
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", {
-                fps: 120,
-                qrbox: 250,
-                facingMode: {
-                    exact: "environment"
-                }, // Sử dụng camera sau
-                videoConstraints: {
-                    width: {
-                        ideal: 1280
-                    }, // Độ rộng video
-                    height: {
-                        ideal: 720
-                    }, // Độ cao video
-                    facingMode: "environment" // Sử dụng camera môi trường
-                }
+            if (decodedText) {
+                document.getElementById('result').innerHTML = `<p>Code scanned = ${decodedText},${decodedResult}</p>`
+                document.getElementById('qr-reader').style.display = 'none'
+                html5Qrcode.stop()
+            }
 
-            });
-        html5QrcodeScanner.render(onScanSuccess);
+        }
+        var html5Qrcode = new Html5Qrcode("qr-reader");
+        const config = {
+            fps: 30,
+            qrbox: {
+                width: 300,
+                height: 150
+            }
+
+        }
+        html5Qrcode.start({
+            facingMode: "environment",
+            config,
+            onScanSuccess
+        });
     </script>
 </body>
 
