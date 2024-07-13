@@ -19,8 +19,8 @@
             width: 300px;
             height: 100px;
         }
-        .qr-box.success {
-            border-color: green; /* Viền màu xanh lá cây khi quét thành công */
+        .success {
+            border-color: green !important; /* Viền màu xanh lá cây khi quét thành công */
         }
     </style>
 </head>
@@ -28,10 +28,10 @@
     <div id="reader">
         <div class="qr-box" id="qr-box"></div>
     </div>
-    <audio id="beep-sound" src="./barcode.wav" preload="auto"></audio>
+    <audio id="beep-sound" src="beep-07.wav" preload="auto"></audio>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
-        function onScanSuccess(decodedText, decodedResult) {
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             // Xử lý khi quét thành công
             console.log(`Code matched = ${decodedText}`, decodedResult);
             alert(`Barcode detected: ${decodedText}`);
@@ -40,43 +40,30 @@
             document.getElementById('qr-box').classList.add('success');
 
             // Phát âm thanh "bíp"
-            document.getElementById('beep-sound').play();
-        }
-
-        function onScanFailure(error) {
-            // Xử lý khi quét thất bại
-            console.warn(`Code scan error = ${error}`);
-        }
-
-        const html5QrCode = new Html5Qrcode("reader");
-
-        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            onScanSuccess(decodedText, decodedResult);
-            // Dừng quét sau khi quét thành công
-            html5QrCode.stop().then(ignore => {
-                // QR code scanning is stopped.
-            }).catch(err => {
-                // Stop failed, handle it.
-                console.error("Failed to stop scanning: ", err);
-            });
-        };
-
-        const config = { fps: 10, qrbox: { width: 300, height: 100 } };
-        
-        // Tùy chọn constraints để tăng chất lượng camera
-        const constraints = {
-            video: {
-                facingMode: "environment",
-                width: { ideal: 1280 }, // Thiết lập độ phân giải video cao hơn
-                height: { ideal: 720 }
+            const beepSound = document.getElementById('beep-sound');
+            if (beepSound.paused) {
+                beepSound.play();
+            } else {
+                beepSound.currentTime = 0;
             }
         };
 
-        html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+        const qrCodeFailureCallback = (error) => {
+            // Xử lý khi quét thất bại
+            console.warn(`Code scan error = ${error}`);
+        };
+
+        const html5QrCode = new Html5Qrcode("reader");
+
+        const config = { fps: 10, qrbox: { width: 300, height: 100 } };
+
+        html5QrCode.start({ facingMode: "environment" }, config, (text, result) => qrCodeSuccessCallback(text, result))
         .catch(err => {
             // Start failed, handle it.
             console.error("Failed to start scanning: ", err);
         });
+
+        html5QrCode.onScanFailure = qrCodeFailureCallback;
     </script>
 </body>
 </html>
