@@ -44,16 +44,21 @@
             console.warn(`Code scan error = ${error}`);
         }
 
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader", 
-            { 
-                fps: 10, 
-                qrbox: { width: 300, height: 100 }, // Khung quét hình chữ nhật nằm ngang
-                aspectRatio: 4 / 3 // Tăng độ phân giải camera, thiết lập tỷ lệ khung hình 4:3
-            },
-            /* verbose= */ false
-        );
+        const html5QrCode = new Html5Qrcode("reader");
 
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            onScanSuccess(decodedText, decodedResult);
+            // Dừng quét sau khi quét thành công
+            html5QrCode.stop().then(ignore => {
+                // QR code scanning is stopped.
+            }).catch(err => {
+                // Stop failed, handle it.
+                console.error("Failed to stop scanning: ", err);
+            });
+        };
+
+        const config = { fps: 10, qrbox: { width: 300, height: 100 } };
+        
         // Tùy chọn constraints để tăng chất lượng camera
         const constraints = {
             video: {
@@ -63,7 +68,11 @@
             }
         };
 
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure, constraints);
+        html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback)
+        .catch(err => {
+            // Start failed, handle it.
+            console.error("Failed to start scanning: ", err);
+        });
     </script>
 </body>
 </html>
