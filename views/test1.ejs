@@ -23,14 +23,29 @@
 
         function onScanFailure(error) {
             // Handle scan failure, usually better to ignore and keep scanning.
-            // console.warn(`Code scan error = ${error}`);
+            console.warn(`Code scan error = ${error}`);
         }
 
         let html5QrcodeScanner = new Html5QrcodeScanner(
             "reader", 
-            { fps: 10, qrbox: { width: 250, height: 250 } },
-            /* verbose= */ false);
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            { 
+                fps: 10, 
+                qrbox: { width: 300, height: 100 }, // Khung quét hình chữ nhật nằm ngang
+                aspectRatio: 4 / 3 // Tăng độ phân giải camera, thiết lập tỷ lệ khung hình 4:3
+            },
+            /* verbose= */ false
+        );
+        
+        // Tùy chọn constraints để tăng chất lượng camera
+        const constraints = {
+            video: {
+                facingMode: "environment",
+                width: { ideal: 1280 }, // Thiết lập độ phân giải video cao hơn
+                height: { ideal: 720 }
+            }
+        };
+
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure, constraints);
     </script>
 </body>
 </html>
