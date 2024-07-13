@@ -5,87 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barcode Scanner</title>
     <style>
-        #interactive {
+        #reader {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-        #interactive video {
-            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div id="interactive" class="viewport"></div>
-    <script src="https://unpkg.com/@ericblade/quagga2@0.0.9/dist/quagga.js"></script>
+    <div id="reader"></div>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#interactive'),    // Or '#yourElement' (optional)
-                    constraints: {
-                        width: 640,
-                        height: 480,
-                        facingMode: "environment" // Use the back camera
-                    },
-                },
-                decoder: {
-                    readers: [
-                        "code_128_reader", 
-                        "ean_reader", 
-                        "ean_8_reader", 
-                        "code_39_reader", 
-                        "code_39_vin_reader", 
-                        "codabar_reader", 
-                        "upc_reader", 
-                        "upc_e_reader", 
-                        "i2of5_reader", 
-                        "2of5_reader", 
-                        "code_93_reader"
-                    ]
-                },
-                locate: true,
-                locator: {
-                    halfSample: true,
-                    patchSize: "medium", // x-small, small, medium, large, x-large
-                    debug: {
-                        showCanvas: false,
-                        showPatches: false,
-                        showFoundPatches: false,
-                        showSkeleton: false,
-                        showLabels: false,
-                        showPatchLabels: false,
-                        showRemainingPatchLabels: false,
-                        boxFromPatches: {
-                            showTransformed: false,
-                            showTransformedBox: false,
-                            showBB: false
-                        }
-                    }
-                }
-            }, function(err) {
-                if (err) {
-                    console.log(err);
-                    return
-                }
-                console.log("Initialization finished. Ready to start");
-                Quagga.start();
-            });
+        function onScanSuccess(decodedText, decodedResult) {
+            // Handle the scanned code as you like, for example:
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+            alert(`Barcode detected: ${decodedText}`);
+        }
 
-            let lastResult = null;
-            Quagga.onDetected(function(result) {
-                let code = result.codeResult.code;
-                if (lastResult !== code) {
-                    lastResult = code;
-                    console.log("Barcode detected and processed : [" + code + "]", result);
-                    alert("Barcode detected: " + code);
-                    Quagga.stop();
-                }
-            });
-        });
+        function onScanFailure(error) {
+            // Handle scan failure, usually better to ignore and keep scanning.
+            // console.warn(`Code scan error = ${error}`);
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", 
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            /* verbose= */ false);
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     </script>
 </body>
 </html>
