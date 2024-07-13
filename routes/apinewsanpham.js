@@ -986,7 +986,7 @@ router.get('/detail', async(req, res) => {
 router.get('/test', async(req, res) => {
     res.render('test')
 })
-router.get('/test1', async(req, res) => {
-    res.render('test1')
+router.get('/test3', async(req, res) => {
+    res.render('test3')
 })
 module.exports = router;
