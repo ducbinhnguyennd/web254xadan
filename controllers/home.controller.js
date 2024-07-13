@@ -256,7 +256,7 @@ exports.editBlog = async (req, res, next) => {
     }
   }
 
-  res.render("home/editBlog.ejs", { msg: msg, objSP: objSP });
+  res.render("/editBlog.ejs", { msg: msg, objSP: objSP });
 };
 exports.editBlogJson = async (req, res, next) => {
   let msg = "";
