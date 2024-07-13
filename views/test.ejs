@@ -1,0 +1,96 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+        }
+        
+        #qr-reader {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .qr-box {
+            position: absolute;
+            border: 2px dashed red;
+            /* Đường viền cho vùng quét */
+            width: 300px;
+            height: 150px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: red;
+            /* Màu đường kẻ */
+        }
+        
+        #result {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="qr-reader">
+        <div class="qr-box"></div>
+        <!-- Khung vùng quét -->
+        <div class="scan-line"></div>
+        <!-- Đường kẻ quét -->
+    </div>
+    <div id="result"></div>
+
+
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            document.getElementById('result').innerHTML = `<p>Code scanned = ${decodedText},${decodedResult}</p>`
+            document.getElementById('qr-reader').style.display = 'none'
+        }
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", {
+                fps: 120,
+                qrbox: 300,
+                facingMode: {
+                    exact: "environment"
+                }, // Sử dụng camera sau
+                videoConstraints: {
+                    width: {
+                        ideal: 1280
+                    }, // Độ rộng video
+                    height: {
+                        ideal: 720
+                    }, // Độ cao video
+                    facingMode: "environment" // Sử dụng camera môi trường
+                }
+            });
+        html5QrcodeScanner.render(onScanSuccess);
+    </script>
+</body>
+
+</html>

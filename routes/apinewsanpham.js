@@ -897,57 +897,6 @@ router.post('/postblog', async(req, res) => {
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
     }
 })
-router.post('/editblog/:id', async (req, res) => {
-    let msg = "";
-    try {
-        const { id } = req.params;
-        const blog = await myMDBlog.blogModel.findById(id);
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog không tồn tại' });
-        }
-
-        // Cập nhật dữ liệu blog
-        blog.tieude_blog = req.body.tieude_blog;
-        blog.noidung_blog = req.body.noidung_blog;
-
-        try {
-            // Đọc buffer của ảnh từ req.file nếu có
-            if (req.file) {
-                const imageBuffer = req.file.buffer;
-
-                // Thực hiện điều chỉnh kích thước (ví dụ: giảm kích thước xuống 800x600)
-                const resizedBuffer = await resizeImage(imageBuffer, 600, 400);
-
-                // Chuyển đổi buffer thành base64
-                blog.img_blog = resizedBuffer.toString('base64');
-            }
-        } catch (error) {
-            msg = error.message;
-        }
-
-        await blog.save();
-        msg = "Cập nhật thành công";
-        res.redirect('/main');
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
-    }
-});
-
-router.get('/editblog/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const blog = await myMDBlog.blogModel.findById(id);
-        if (!blog) {
-            return res.status(404).json({ message: 'Blog không tồn tại' });
-        }
-        res.render('/editBlog', { objSP: blog });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
-    }
-});
-
 
 router.get('/getaddblog', async(req, res) => {
     res.render('addblog');
@@ -962,34 +911,82 @@ router.get('/getblog', async(req, res) => {
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
     }
 })
+router.get('/editblog/:idblog', async(req, res) => {
+    try {
+        const idblog = req.params.idblog;
+        const blog = await myMDBlog.blogModel.findById(idblog);
+        res.render('editBlog', {
+            blog
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
+})
+
+router.post('/editblog/:idblog', async(req, res) => {
+    try {
+        const { tieude_blog, img_blog, tieude, content, img } = req.body
+        const idblog = req.params.idblog;
+        const blog = await myMDBlog.blogModel.findById(idblog);
+        blog.tieude_blog = tieude_blog;
+        blog.img_blog = img_blog;
+
+        if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
+            blog.noidung.forEach((nd, index) => {
+                nd.content = content[index];
+                nd.img = img[index];
+                nd.tieude = tieude[index];
+
+            });
+
+            for (let i = blog.noidung.length; i < content.length; i++) {
+                blog.noidung.push({ content: content[i], img: img[i], tieude: tieude[i] });
+            }
+        } else {
+            blog.noidung.push({ content, img, tieude });
+        }
+
+        await blog.save();
+        res.redirect('/main');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
+})
+
+router.post('/deleteblog/:idblog', async(req, res) => {
+    try {
+
+        const idblog = req.params.idblog;
+        const blog = await myMDBlog.blogModel.findByIdAndDelete(idblog);
+        res.redirect('/main');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
+})
 
 router.get('/cart', async(req, res) => {
     res.render('cart')
 })
+
 router.get('/checkout', async(req, res) => {
     res.render('checkout')
 })
+
 router.get('/contact1', async(req, res) => {
     res.render('contact')
 })
+
 router.get('/detail', async(req, res) => {
     res.render('detail')
 })
-
-router.get('/clear-cache', async(req, res) => {
-    try {
-        if (!redisClient.isOpen) {
-            redisClient.connect();
-        }
-        const keys = await redisClient.keys('express-redis-cache:*');
-        if (keys.length === 0) {
-            return res.send({ message: 'No cache keys found' });
-        }
-        await redisClient.del(keys);
-        res.send({ message: 'Cache cleared', numDeleted: keys.length });
-    } catch (error) {
-        console.log('Failed to clear cache', error);
-        res.status(500).send({ error: 'Failed to clear cache' });
-    }
-});
+router.get('/test', async(req, res) => {
+    res.render('test')
+})
+router.get('/test1', async(req, res) => {
+    res.render('test1')
+})
 module.exports = router;
