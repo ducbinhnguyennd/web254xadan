@@ -13,7 +13,7 @@
         }
         
         .qr-box {
-            border: 4px solid rgb(255, 255, 255);
+            border: 4px solid white;
             /* Viền mặc định màu trắng */
             position: absolute;
             top: 50%;
@@ -23,8 +23,8 @@
             height: 100px;
         }
         
-        .qr-box.success {
-            border-color: green;
+        .success {
+            border-color: green !important;
             /* Viền màu xanh lá cây khi quét thành công */
         }
     </style>
@@ -34,22 +34,29 @@
     <div id="reader">
         <div class="qr-box" id="qr-box"></div>
     </div>
-    <audio id="beep-sound" src="./barcode.wav" preload="auto"></audio>
-    <script src="http://localhost:3000/js/jstest1.js"></script>
+    <audio id="beep-sound" src="beep-07.wav" preload="auto"></audio>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <script>
         function onScanSuccess(decodedText, decodedResult) {
             // Xử lý khi quét thành công
+
             console.log(`Code matched = ${decodedText}`, decodedResult);
-            alert(`Barcode detected: ${decodedText}`);
+
+            // alert(`vc: ${decodedText}`);
 
             // Đổi viền khung quét thành màu xanh lá cây
-            document.getElementById('qr-box').style.border = '4px solid rgb(32, 248, 3)'
+            document.getElementById('qr-box').classList.add('success');
 
             // Phát âm thanh "bíp"
-            document.getElementById('beep-sound').play();
-        }
+            const beepSound = document.getElementById('beep-sound');
+            if (beepSound.paused) {
+                beepSound.play();
+            } else {
+                beepSound.currentTime = 0;
+            }
+        };
 
-        function onScanFailure(error) {
+        const qrCodeFailureCallback = (error) => {
             // Xử lý khi quét thất bại
             console.warn(`Code scan error = ${error}`);
         }
