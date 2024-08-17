@@ -67,17 +67,48 @@
                                 </p>
                                 <% if (item.img) { %>
                                     <div class="product-preview mb-3 d-flex justify-content-center">
-                                        <img src="<%= item.img %>" class="sanpham w-50 h-50" alt="product image">
-
+                                        <img src="<%= item.img %>" class="sanpham w-50 h-50">
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <div>
+                        <% contentLink.splice(0.5).forEach((item) => { %>
+                            <div class="mb-4">
+                                <h6 itemprop="name" class="display-7 text-uppercase" style="font-weight: bold;">
+                                    <%= item.tieude %>
+                                </h6>
+                                <p style="color: black">
+                                    <% item.noidung.forEach((i) => { %>
+                                        <%- i.nd.replace(/\\n/g, "<br>") %>
+                                            <% i.a.forEach((j) => { %>
+                                                <a href="<%= j.link %>">
+                                                    <%= j.name %>
+                                                </a>
+                                                <% }); %>
+                                                    <% }); %>
+                                </p>
+                                <% if (item.img) { %>
+                                    <div class="product-preview mb-3 d-flex justify-content-center">
+                                        <img src="<%= item.img %>" class="sanpham w-50 h-50">
                                     </div>
                                     <% } %>
                             </div>
                             <% }); %>
                     </div>
                 </div>
-                <div class="text-center">
+                <div class="container">
+                    <h3>Xem Thêm</h3>
+                    <li>
+                        <a href="http://localhost:8080/contentBlog/Phone-SE-4-se-ra-mat-vao-dau-nam-2025%2C-co-man-hinh-OLED-va-Appe-Inteligence" style="color: rgb(0, 125, 228);">PHONE SE 4 SẼ RA MẮT VÀO ĐẦU NĂM 2025, CÓ MÀN HÌNH OLED VÀ APPE INTELIGENCE</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:8080/contentBlog/1OS-18.1-Beta-2-va-1OS-18-Beta-6-ra-mat%2C-hay-cung-minh-kham-pha-tat-tan-tat-cac-tinh-nang-moi" style="color: rgb(0, 125, 228);">1OS 18.1 BETA 2 VÀ 1OS 18 BETA 6 RA MẮT, HÃY CÙNG MÌNH KHÁM PHÁ TẤT TẦN TẬT CÁC TÍNH NĂNG MỚI</a>
+                    </li>
+                </div>
+                <div class="text-center mt-4">
                     <a class="btn tn-medium btn-danger text-center mb-3" href="/">Mua Iphone Chính Hãng Tại Gia Huy Mobile</a>
-
                 </div>
             </section>
 

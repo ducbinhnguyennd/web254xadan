@@ -71,16 +71,11 @@ app.get('/testcheckip', (req, res) => {
   res.send('Hello World!')
 })
 
-const port = 8080
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`)
-})
-
 app.use(function (req, res, next) {
   next(createError(404))
 })
-app.listen(3000, () => {
-  console.log('Server is running on port 3000')
+app.listen(8080, () => {
+  console.log('Server is running on port 8080')
   console.log(__dirname)
 })
 module.exports = app
