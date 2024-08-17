@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barcode Scanner</title>
- 
+
 </head>
+
 <body>
     <div id="reader">
         <div class="qr-box" id="qr-box"></div>
@@ -15,9 +17,9 @@
     <script>
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             // Xử lý khi quét thành công
-         
+
             console.log(`Code matched = ${decodedText}`, decodedResult);
-          
+
             // alert(`vc: ${decodedText}`);
 
         };
@@ -29,15 +31,24 @@
 
         const html5QrCode = new Html5Qrcode("reader");
 
-        const config = { fps: 10, qrbox: { width: 300, height: 100 } };
+        const config = {
+            fps: 10,
+            qrbox: {
+                width: 300,
+                height: 100
+            }
+        };
 
-        html5QrCode.start({ facingMode: "environment" }, config, (text, result) => qrCodeSuccessCallback(text, result))
-        .catch(err => {
-            // Start failed, handle it.
-            console.error("Failed to start scanning: ", err);
-        });
+        html5QrCode.start({
+                facingMode: "environment"
+            }, config, (text, result) => qrCodeSuccessCallback(text, result))
+            .catch(err => {
+                // Start failed, handle it.
+                console.error("Failed to start scanning: ", err);
+            });
 
         html5QrCode.onScanFailure = qrCodeFailureCallback;
     </script>
 </body>
+
 </html>
