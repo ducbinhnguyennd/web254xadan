@@ -167,7 +167,7 @@
         }
         
         a {
-            color: #FFD333;
+            color: #6ad3ff;
             text-decoration: none;
             background-color: transparent;
         }
@@ -9886,7 +9886,7 @@
         
         .navbar-dark .navbar-nav .nav-link:hover,
         .navbar-dark .navbar-nav .nav-link.active {
-            color: #FF0000;
+            color: #ffa6a6;
         }
         
         @media (max-width: 991.98px) {

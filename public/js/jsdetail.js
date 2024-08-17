@@ -1,4 +1,5 @@
-const pricestrongInitialValue = document.querySelector('.giamay').textContent.trim();
+const giamayElement = document.querySelector('.giamay');
+const pricestrongInitialValue = giamayElement ? giamayElement.textContent.trim() : '';
 
 document.querySelectorAll('.inputloai').forEach(item => {
     item.addEventListener('click', function() {
@@ -53,21 +54,28 @@ function mess() {
 }
 document.addEventListener("DOMContentLoaded", function() {
     var content = document.getElementById("content");
-    var paragraph = content.querySelector("p");
-    var toggleButton = content.querySelector("#toggleButton");
+    if (content) {
+        var paragraph = content.querySelector("p");
+        var toggleButton = content.querySelector("#toggleButton");
 
-
-    paragraph.classList.add("collapsed");
-
-    toggleButton.addEventListener("click", function(e) {
-        e.preventDefault();
-
-        if (paragraph.classList.contains("collapsed")) {
-            paragraph.classList.remove("collapsed");
-            toggleButton.textContent = "Thu gọn"; // Chuyển nút sang "Thu gọn"
-        } else {
+        if (paragraph && toggleButton) {
             paragraph.classList.add("collapsed");
-            toggleButton.textContent = "Xem thêm"; // Chuyển nút sang "Xem thêm"
+
+            toggleButton.addEventListener("click", function(e) {
+                e.preventDefault();
+
+                if (paragraph.classList.contains("collapsed")) {
+                    paragraph.classList.remove("collapsed");
+                    toggleButton.textContent = "Thu gọn"; // Chuyển nút sang "Thu gọn"
+                } else {
+                    paragraph.classList.add("collapsed");
+                    toggleButton.textContent = "Xem thêm"; // Chuyển nút sang "Xem thêm"
+                }
+            });
+        } else {
+            console.error("Phần tử paragraph hoặc toggleButton không tồn tại trong content.");
         }
-    });
+    } else {
+        console.error("Phần tử với id 'content' không tồn tại.");
+    }
 });

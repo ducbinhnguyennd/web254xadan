@@ -1172,13 +1172,65 @@ router.get('/cart', async (req, res) => {
   res.render('cart')
 })
 
-router.get('/checkout', async (req, res) => {
-  res.render('checkout')
+router.get('/getblog', async(req, res) => {
+    try {
+        const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
+        res.render('blog', { listBl  })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
+})
+router.get('/editblog/:idblog', async(req, res) => {
+    try {
+        const idblog = req.params.idblog;
+        const blog = await myMDBlog.blogModel.findById(idblog);
+        res.render('editBlog', {
+            blog
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
 })
 
-router.get('/contact1', async (req, res) => {
-  res.render('contact')
-})
+router.post('/editblog/:idblog', async(req, res) => {
+    try {
+        const { tieude_blog, img_blog, tieude, content, img } = req.body
+        const idblog = req.params.idblog;
+        const blog = await myMDBlog.blogModel.findById(idblog);
+        blog.tieude_blog = tieude_blog;
+        blog.img_blog = img_blog;
+
+        if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
+            blog.noidung.forEach((nd, index) => {
+                nd.content = content[index];
+                nd.img = img[index];
+                nd.tieude = tieude[index];
+
+            });
+
+            for (let i = blog.noidung.length; i < content.length; i++) {
+                blog.noidung.push({ content: content[i], img: img[i], tieude: tieude[i] });
+            }
+        } else {
+            blog.noidung.push({ content, img, tieude });
+        }
+
+        await blog.save();
+        res.redirect('/main');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
+    }
+})                             
+   function removeVietnameseTones(str) {
+        str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D');
+        return str;
+    }
+                          
 
 router.get('/detail', async (req, res) => {
   res.render('detail')
