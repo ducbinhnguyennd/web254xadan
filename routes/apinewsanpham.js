@@ -984,9 +984,27 @@ router.get('/contentBlog/:tieude', async (req, res) => {
         img: noidung.img || ''
       }
     })
+    const contentLink = blog.contentLink.map(noidung => {
+      return {
+        tieude: noidung.tieude,
+        noidung: noidung.noidung.map(noidung => {
+          return {
+            nd: noidung.nd.replace(/\\n/g, '<br>'),
+            a: noidung.a.map(a => {
+              return {
+                name: a.name,
+                link: a.link
+              }
+            })
+          }
+        }),
+        img: noidung.img
+      }
+    })
 
     res.render('chitietblog', {
       content,
+      contentLink,
       tieude: blog.tieude_blog,
       listBl,
       image_blog: blog.img_blog,
@@ -1000,13 +1018,26 @@ router.get('/contentBlog/:tieude', async (req, res) => {
 
 router.post('/postblog', async (req, res) => {
   try {
-    const { tieude_blog, img, content, tieude, img_blog } = req.body
+    const {
+      tieude_blog,
+      img,
+      content,
+      tieude,
+      img_blog,
+      tieudeLink,
+      name,
+      link,
+      imgLink,
+      ndLink
+    } = req.body
+
     const tieude_khongdau = unicode(tieude_blog)
     const blog = new myMDBlog.blogModel({
       tieude_blog,
       img_blog,
       tieude_khongdau
     })
+
     if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
       for (let i = 0; i < content.length; i++) {
         blog.noidung.push({
@@ -1018,6 +1049,45 @@ router.post('/postblog', async (req, res) => {
     } else {
       blog.noidung.push({ content, img, tieude })
     }
+
+    if (Array.isArray(tieudeLink)) {
+      for (let i = 0; i < tieudeLink.length; i++) {
+        const newContentLink = {
+          tieude: tieudeLink[i],
+          img: imgLink[i],
+          noidung: []
+        }
+        if (Array.isArray(ndLink)) {
+          for (let j = 0; j < ndLink.length; j++) {
+            const newNoidung = {
+              nd: ndLink[j],
+              a: [
+                {
+                  name: Array.isArray(name) ? name[j] : name,
+                  link: Array.isArray(link) ? link[j] : link
+                }
+              ]
+            }
+           newContentLink.noidung.push(newNoidung)
+          }
+        } else {
+          const newNoidung = {
+            nd: ndLink,
+            a: [
+              {
+                name: name,
+                link: link
+              }
+            ]
+          }
+          newContentLink.noidung.push(newNoidung)
+        }
+        blog.contentLink.push(newContentLink)
+      }
+    }
+
+   
+
     await blog.save()
     res.redirect('/main')
   } catch (error) {
