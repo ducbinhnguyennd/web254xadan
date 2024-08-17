@@ -905,7 +905,7 @@ router.get('/getaddblog', async(req, res) => {
 router.get('/getblog', async(req, res) => {
     try {
         const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 });
-        res.render('blog', { listBl })
+        res.render('blog', { listBl  })
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
@@ -954,7 +954,13 @@ router.post('/editblog/:idblog', async(req, res) => {
         console.error(error);
         res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` });
     }
-})
+})                             
+   function removeVietnameseTones(str) {
+        str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D');
+        return str;
+    }
+                          
 
 router.post('/deleteblog/:idblog', async(req, res) => {
     try {
