@@ -41,7 +41,7 @@
 </head>
 
 <body>
-    
+
     <%- include('header') %>
 
         <!-- Carousel Start -->
@@ -430,19 +430,18 @@
                             <div class="row px-xl-5">
                                 <div class="col">
                                     <div class="owl-carousel vendor-carousel">
-                                        <% listBl.forEach((item) => { %>
+                                        <% listBl.forEach((item)=> { %>
                                             <div class="bg-light p-4" style="height: 300px;">
                                                 <img src="<%= item.img_blog %>" alt="">
-                                                <div class="text-center py-4 overflow-hidden">
-                                                    <a class="h6 text-decoration-none text-truncate" 
-                                                       href="/contentBlog/<%= encodeURIComponent(removeVietnameseTones(item.tieude_blog)).replace(/%20/g, '-') %>" 
-                                                       style="word-wrap: break-word; white-space: normal; max-width: 100%;">
-                                                       removeVietnameseTones(item.tieude_blog)
+                                                <div class="text-center py-4 overflow-hidden ">
+                                                    <a class="h6 text-decoration-none text-truncate " href="/contentBlog/<%= encodeURIComponent(item.tieude_khongdau).replace(/%20/g, '-')%>" style=" word-wrap: break-word;
+                                                white-space: normal;
+                                                max-width: 100%; /* hoặc giá trị khác phù hợp */;">
+                                                        <%= item.tieude_blog %>
                                                     </a>
-                                                  
                                                 </div>
                                             </div>
-                                        <% }); %>
+                                            <% }); %>
                                     </div>
                                 </div>
                             </div>
@@ -473,13 +472,7 @@
                             <!-- Template Javascript -->
                             <script src="https://www.giahuystore.com/js/main.js"></script>
                             <script src="https://www.giahuystore.com/js/jsdetail.js "></script>
-                            <% 
-                            function removeVietnameseTones(str) {
-                                str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                                str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D');
-                                return str;
-                            }
-                            %>
+
 </body>
 
 </html>

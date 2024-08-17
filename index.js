@@ -71,7 +71,7 @@ app.get('/testcheckip', (req, res) => {
   res.send('Hello World!')
 })
 
-const port = 3000
+const port = 8080
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`)
 })
