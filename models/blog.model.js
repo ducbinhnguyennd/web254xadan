@@ -22,7 +22,7 @@ const blogChema = new db.mongoose.Schema(
                 name: { type: String },
                 link: { type: String }
               }
-            ]
+            ],
           }
         ],
         img: {
