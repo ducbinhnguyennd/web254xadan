@@ -7,28 +7,12 @@
         <form action="/postblog" method="post">
             <form class="px-4 py-3">
                 <br>
-             
+
                 <label class="form-label">Tiêu đề Blog</label>
                 <input type="text" name="tieude_blog" class="form-control" placeholder="Nhập tiêu đề blog"><br>
                 <label class="form-label">Ảnh Blog</label>
                 <input type="text" name="img_blog" class="form-control" placeholder="Nhập link ảnh blog"><br>
 
-                <h5>Nội Dung</h5>
-                <div id="blogContainer">
-                    <div class="noidung">
-                        <label class="form-label">Tiêu đề nội dung</label>
-                        <input type="text" name="tieude" class="form-control" placeholder="Nhập tiêu đề nội dung Blog"><br>
-                        <label class="form-label">Nội dung</label>
-                        <input type="text" name="content" class="form-control" placeholder="Nhập nội dung Blog"><br>
-                        <div class="mb-3">
-                            <label class="form-label">Ảnh Blog</label>
-                            <input class="form-control" type="text" name="img" placeholder="Nhập link ảnh">
-                        </div>
-                    </div>
-                </div>
-
-                <hr style="font-weight: bold; border: 2px solid black;">
-                <input type="button" class="btn btn-danger" value="Thêm nội dung blog" onclick="themnoidung()">
 
                 <h5>Content Link</h5>
                 <div id="contentLinkContainer">
@@ -53,33 +37,6 @@
         </form>
 
         <script>
-            function themnoidung() {
-                var newDiv = document.createElement("div");
-                newDiv.className = "noidung";
-
-                // Thêm nội dung vào thẻ div mới
-                newDiv.innerHTML = `
-                <label class="form-label">Tiêu đề nội dung</label>
-                <input type="text" name="tieude" class="form-control" placeholder="Nhập tiêu đề nội dung Blog"><br>
-                <label class="form-label">Nội dung</label>
-                <input type="text" name="content" class="form-control" placeholder="Nhập nội dung Blog"><br>
-                <div class="mb-3">
-                    <label class="form-label">Ảnh Blog</label>
-                    <input class="form-control" type="text" name="img" placeholder="Nhập link ảnh">
-                </div>
-                <button style="margin-bottom:5px" type="button" class="btn btn-danger" onclick="xoanoidung(this)">Xóa Thẻ</button>
-                <hr style="font-weight: bold; border: 2px solid black;">
-            `;
-
-                // Thêm thẻ div mới vào trong container
-                document.getElementById("blogContainer").appendChild(newDiv);
-            }
-
-            function xoanoidung(button) {
-                // Xóa thẻ div chứa nút bấm
-                button.parentElement.remove();
-            }
-
             function themContentLink() {
                 var newDiv = document.createElement("div");
                 newDiv.className = "contentLink";

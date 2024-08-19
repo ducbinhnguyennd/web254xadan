@@ -979,8 +979,8 @@ router.get('/contentBlog/:tieude', async (req, res) => {
 
     const content = blog.noidung.map(noidung => {
       return {
-        tieude: noidung.tieude,
-        content: noidung.content.replace(/\\n/g, '<br>'),
+        tieude: noidung.tieude || '',
+        content: (typeof noidung.content === 'string' ? noidung.content.replace(/\\n/g, '<br>') : '') || '',
         img: noidung.img || ''
       }
     })
@@ -989,7 +989,7 @@ router.get('/contentBlog/:tieude', async (req, res) => {
         tieude: noidung.tieude,
         noidung: noidung.noidung.map(noidung => {
           return {
-            nd: noidung.nd.replace(/\\n/g, '<br>'),
+            nd: (typeof noidung.nd === 'string' ? noidung.nd.replace(/\\n/g, '<br>') : '') || '',
             a: noidung.a.map(a => {
               return {
                 name: a.name,
@@ -1168,6 +1168,116 @@ router.post('/editblog/:idblog', async (req, res) => {
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
+router.post('/editContentLink/:idblog', async (req, res) => {
+  try {
+    const { tieude_blog, img_blog, tieudeLink, name, link, imgLink, ndLink } =
+      req.body
+    const idblog = req.params.idblog
+    const blog = await myMDBlog.blogModel.findById(idblog)
+
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog không tồn tại' })
+    }
+
+    // Cập nhật thông tin chính của blog
+    if (tieude_blog !== undefined) blog.tieude_blog = tieude_blog
+    if (img_blog !== undefined) blog.img_blog = img_blog
+    if (tieude_blog !== undefined) blog.tieude_khongdau = unicode(tieude_blog)
+
+    // Xử lý cập nhật hoặc thêm mới các phần tử trong contentLink
+    if (Array.isArray(tieudeLink)) {
+      // Tạo một map để dễ dàng tra cứu các phần tử contentLink hiện có
+      const contentLinkMap = new Map()
+      blog.contentLink.forEach(cl => contentLinkMap.set(cl.tieude, cl))
+
+      tieudeLink.forEach((tieude, index) => {
+        let contentLink = contentLinkMap.get(tieude)
+
+        if (!contentLink) {
+          // Nếu contentLink chưa tồn tại, tạo mới
+          contentLink = {
+            tieude: tieude || '',
+            img: imgLink
+              ? Array.isArray(imgLink)
+                ? imgLink[index] || ''
+                : imgLink
+              : '',
+            noidung: []
+          }
+          blog.contentLink.push(contentLink)
+          contentLinkMap.set(tieude, contentLink) // Cập nhật map
+        } else {
+          // Cập nhật các thuộc tính hiện tại của contentLink
+          contentLink.tieude = tieude || contentLink.tieude
+          contentLink.img = imgLink
+            ? Array.isArray(imgLink)
+              ? imgLink[index]
+              : imgLink
+            : contentLink.img
+        }
+
+        // Xử lý ndLink, name, và link để đảm bảo chúng là chuỗi
+        const nd = Array.isArray(ndLink) ? ndLink[index] || '' : ndLink || ''
+        const aName = Array.isArray(name) ? name[index] || '' : name || ''
+        const aLink = Array.isArray(link) ? link[index] || '' : link || ''
+
+        // Chuyển đổi mảng thành chuỗi nếu cần
+        const newNoidung = {
+          nd: nd || '', // Đảm bảo nd là chuỗi
+          a: [
+            {
+              name: aName || '', // Đảm bảo name là chuỗi
+              link: aLink || '' // Đảm bảo link là chuỗi
+            }
+          ]
+        }
+
+        // Xóa noidung cũ nếu đã tồn tại và thêm mới
+        const noidungIndex = contentLink.noidung.findIndex(
+          nd => nd.nd === newNoidung.nd
+        )
+        if (noidungIndex >= 0) {
+          contentLink.noidung[noidungIndex] = newNoidung
+        } else {
+          contentLink.noidung.push(newNoidung)
+        }
+      })
+
+      // Xóa các contentLink không còn trong request
+      blog.contentLink = blog.contentLink.filter(cl =>
+        tieudeLink.includes(cl.tieude)
+      )
+    } else {
+      // Trường hợp tieudeLink không phải là mảng
+      const contentLink = {
+        tieude: tieudeLink || '',
+        img: imgLink || '',
+        noidung: [
+          {
+            nd: ndLink || '',
+            a: [
+              {
+                name: name || '',
+                link: link || ''
+              }
+            ]
+          }
+        ]
+      }
+      blog.contentLink = [contentLink]
+    }
+
+    await blog.save()
+    res.redirect('/main')
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
+  }
+})
+
+
+
+
 
 router.post('/deleteblog/:idblog', async (req, res) => {
   try {
@@ -1205,6 +1315,20 @@ router.get('/editblog/:idblog', async (req, res) => {
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
+
+router.get('/editContentLink/:idblog', async (req, res) => {
+  try {
+    const idblog = req.params.idblog
+    const blog = await myMDBlog.blogModel.findById(idblog)
+    res.render('editContenLink', {
+      blog
+    })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
+  }
+})
+
 
 router.post('/editblog/:idblog', async (req, res) => {
   try {
