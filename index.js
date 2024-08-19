@@ -15,8 +15,7 @@ const app = express()
 const MongoStore = require('connect-mongo')
 var db = require('./models/db')
 const uri =
-  'mongodb+srv://ducbinhnguyennd:ducbinhnguyennd@cluster0.geuahvt.mongodb.net/giahuystore?retryWrites=true&w=majority'
-
+  'mongodb+srv://ducbinhnguyennd:ducbinhnguyennd@cluster0.sck9o.mongodb.net/giahuystore?retryWrites=true&w=majority'
 const mongoStoreOptions = {
   mongooseConnection: db.mongoose.connection,
   mongoUrl: uri,
