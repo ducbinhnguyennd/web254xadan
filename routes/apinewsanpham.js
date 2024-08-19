@@ -139,16 +139,16 @@ router.get('/', async (req, res) => {
     const sp = await Promise.all(
       allsp.map(async s => {
         let img
-        if (s.name === '11 PRO MAX') {
+        if (s.name === '13 PRO MAX') {
           img = '/img/iphone13.png'
         }
         if (s.name === '12 PRO MAX') {
           img = '/img/iphone12.jpg'
         }
-        if (s.name === '13 PRO MAX') {
+        if (s.name === '14 PRO MAX') {
           img = '/img/iphone14.png'
         }
-        if (s.name === '14 PRO MAX') {
+        if (s.name === '11 PRO MAX') {
           img = '/img/iphone11.jpg'
         }
         return {
