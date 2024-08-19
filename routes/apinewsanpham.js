@@ -139,16 +139,16 @@ router.get('/', async (req, res) => {
     const sp = await Promise.all(
       allsp.map(async s => {
         let img
-        if (s.name === 'iPhone 13 Pro Max') {
+        if (s.name === '11 PRO MAX') {
           img = '/img/iphone13.png'
         }
-        if (s.name === 'iPhone 12 Pro Max') {
+        if (s.name === '12 PRO MAX') {
           img = '/img/iphone12.jpg'
         }
-        if (s.name === 'iPhone 14 Pro Max') {
+        if (s.name === '13 PRO MAX') {
           img = '/img/iphone14.png'
         }
-        if (s.name === 'iPhone 11 Pro Max') {
+        if (s.name === '14 PRO MAX') {
           img = '/img/iphone11.jpg'
         }
         return {
@@ -162,8 +162,8 @@ router.get('/', async (req, res) => {
     const tenspjson2 = await Promise.all(
       allsp.map(async tensp => {
         if (
-          tensp.name === 'iPhone 13 Pro Max' ||
-          tensp.name === 'iPhone 14 Pro Max'
+          tensp.name === '13 PRO MAX' ||
+          tensp.name === '14 PRO MAX'
         ) {
           const chitietspJson = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
@@ -190,8 +190,8 @@ router.get('/', async (req, res) => {
     const tenspjson1 = await Promise.all(
       allsp.map(async tensp => {
         if (
-          tensp.name === 'iPhone 12 Pro Max' ||
-          tensp.name === 'iPhone 11 Pro Max'
+          tensp.name === '11 PRO MAX' ||
+          tensp.name === '12 PRO MAX'
         ) {
           const chitietspJson1 = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
@@ -232,6 +232,7 @@ router.get('/', async (req, res) => {
       danhgiaIsReadTrue,
       sp
     })
+    console.log(tenspjson1)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
