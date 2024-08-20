@@ -985,27 +985,9 @@ router.get('/contentBlog/:tieude', async (req, res) => {
         img: noidung.img || ''
       }
     })
-    const contentLink = blog.contentLink.map(noidung => {
-      return {
-        tieude: noidung.tieude,
-        noidung: noidung.noidung.map(noidung => {
-          return {
-            nd: (typeof noidung.nd === 'string' ? noidung.nd.replace(/\\n/g, '<br>') : '') || '',
-            a: noidung.a.map(a => {
-              return {
-                name: a.name,
-                link: a.link
-              }
-            })
-          }
-        }),
-        img: noidung.img
-      }
-    })
 
     res.render('chitietblog', {
       content,
-      contentLink,
       tieude: blog.tieude_blog,
       listBl,
       image_blog: blog.img_blog,
@@ -1017,20 +999,32 @@ router.get('/contentBlog/:tieude', async (req, res) => {
   }
 })
 
+function replaceKeywordsWithLinks (content, keywords, urlBase) {
+  // Nếu keywords không phải là mảng, chuyển đổi nó thành mảng chứa một từ khóa duy nhất
+  if (!Array.isArray(keywords)) {
+    keywords = [keywords]
+  }
+
+  // Nếu không có từ khóa, trả lại nội dung gốc
+  if (!keywords || keywords.length === 0) {
+    return content
+  }
+
+  // Thay thế từng từ khóa bằng thẻ <a>
+  keywords.forEach(keyword => {
+    // Tạo một biểu thức chính quy để tìm từ khóa
+    const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
+    // Thay thế từ khóa bằng thẻ <a> với đường link
+    content = content.replace(regex, `<a href="${urlBase}">${keyword}</a>`)
+  })
+
+  return content
+}
+
 router.post('/postblog', async (req, res) => {
   try {
-    const {
-      tieude_blog,
-      img,
-      content,
-      tieude,
-      img_blog,
-      tieudeLink,
-      name,
-      link,
-      imgLink,
-      ndLink
-    } = req.body
+    const { tieude_blog, img, content, tieude, img_blog, keywords, urlBase } =
+      req.body
 
     const tieude_khongdau = unicode(tieude_blog)
     const blog = new myMDBlog.blogModel({
@@ -1042,72 +1036,44 @@ router.post('/postblog', async (req, res) => {
     // Thêm các nội dung blog
     if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
       for (let i = 0; i < content.length; i++) {
+        const updatedContent = replaceKeywordsWithLinks(
+          content[i],
+          keywords[i],
+          urlBase[i]
+        )
+
         blog.noidung.push({
-          content: content[i],
+          content: updatedContent,
           img: img[i],
-          tieude: tieude[i]
+          tieude: tieude[i],
+          keywords: keywords[i],
+          urlBase: urlBase[i]
         })
       }
     } else {
-      blog.noidung.push({ content, img, tieude })
-    }
+      const updatedContent = replaceKeywordsWithLinks(
+        content,
+        keywords,
+        urlBase
+      )
 
-    // Xử lý contentLink và noidung
-    let currentContentLinkIndex = -1
-
-    if (Array.isArray(tieudeLink)) {
-      for (let i = 0; i < ndLink.length; i++) {
-        if (tieudeLink[i] || i === 0 || currentContentLinkIndex === -1) {
-          // Khi có tieudeLink mới, hoặc khi đây là lần đầu tiên, tạo một newContentLink mới
-          const newContentLink = {
-            tieude: tieudeLink[i] || tieudeLink[currentContentLinkIndex],
-            img: imgLink[i] || tieudeLink[currentContentLinkIndex],
-            noidung: []
-          }
-          blog.contentLink.push(newContentLink)
-          currentContentLinkIndex = blog.contentLink.length - 1
-        }
-
-        // Thêm noidung vào contentLink hiện tại
-        const newNoidung = {
-          nd: Array.isArray(ndLink) ? ndLink[i] : ndLink,
-          a: [
-            {
-              name: Array.isArray(name) ? name[i] : name,
-              link: Array.isArray(link) ? link[i] : link
-            }
-          ]
-        }
-        blog.contentLink[currentContentLinkIndex].noidung.push(newNoidung)
-      }
-    } else {
-      // Trường hợp tieudeLink không phải là mảng
-      const newContentLink = {
-        tieude: tieudeLink,
-        img: imgLink,
-        noidung: []
-      }
-      const newNoidung = {
-        nd: ndLink,
-        a: [
-          {
-            name: name,
-            link: link
-          }
-        ]
-      }
-      newContentLink.noidung.push(newNoidung)
-      blog.contentLink.push(newContentLink)
+      blog.noidung.push({
+        content: updatedContent,
+        img,
+        tieude,
+        keywords,
+        keywords
+      })
     }
 
     await blog.save()
-    console.log(blog.contentLink)
     res.redirect('/main')
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
+
 
 router.get('/getaddblog', async (req, res) => {
   res.render('addblog')
