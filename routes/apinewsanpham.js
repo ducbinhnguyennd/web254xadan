@@ -999,6 +999,11 @@ router.get('/contentBlog/:tieude', async (req, res) => {
   }
 })
 
+function escapeRegExp (string) {
+  // Thoát các ký tự đặc biệt trong biểu thức chính quy
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 function replaceKeywordsWithLinks (content, keywords, urlBase) {
   // Nếu keywords không phải là mảng, chuyển đổi nó thành mảng chứa một từ khóa duy nhất
   if (!Array.isArray(keywords)) {
@@ -1012,15 +1017,19 @@ function replaceKeywordsWithLinks (content, keywords, urlBase) {
 
   // Thay thế từng từ khóa bằng thẻ <a>
   keywords.forEach(keyword => {
+    if (keyword === '') {
+      return
+    }
+    // Thoát các ký tự đặc biệt trong từ khóa
+    const escapedKeyword = escapeRegExp(keyword)
     // Tạo một biểu thức chính quy để tìm từ khóa
-    const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
+    const regex = new RegExp(`\\b${escapedKeyword}\\b`, 'gi')
     // Thay thế từ khóa bằng thẻ <a> với đường link
     content = content.replace(regex, `<a href="${urlBase}">${keyword}</a>`)
   })
 
   return content
 }
-
 router.post('/postblog', async (req, res) => {
   try {
     const { tieude_blog, img, content, tieude, img_blog, keywords, urlBase } =
@@ -1075,6 +1084,7 @@ router.post('/postblog', async (req, res) => {
 })
 
 
+
 router.get('/getaddblog', async (req, res) => {
   res.render('addblog')
 })
@@ -1091,9 +1101,29 @@ router.get('/getblog', async (req, res) => {
 router.get('/editblog/:idblog', async (req, res) => {
   try {
     const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    res.render('editBlog', {
-      blog
+    const blogg = await myMDBlog.blogModel.findById(idblog)
+
+    // Hàm để loại bỏ tất cả các thẻ <a> khỏi nội dung
+    function removeAllLinks (content) {
+      // Biểu thức chính quy để tìm và loại bỏ tất cả các thẻ <a> cùng với nội dung của chúng
+      return content.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1')
+    }
+
+    const blog = blogg.noidung.map(bl => {
+      return {
+        content: removeAllLinks(bl.content),
+        img: bl.img,
+        tieude: bl.tieude,
+        keywords: bl.keywords,
+        urlBase: bl.urlBase
+      }
+    })
+
+    res.render('home/editBlog.ejs', {
+      idblog,
+      blog,
+      tieude_blog: blogg.tieude_blog,
+      img_blog: blogg.img_blog
     })
   } catch (error) {
     console.error(error)
@@ -1103,7 +1133,8 @@ router.get('/editblog/:idblog', async (req, res) => {
 
 router.post('/editblog/:idblog', async (req, res) => {
   try {
-    const { tieude_blog, img_blog, tieude, content, img } = req.body
+    const { tieude_blog, img_blog, tieude, content, img, keywords, urlBase } =
+      req.body
     const idblog = req.params.idblog
     const blog = await myMDBlog.blogModel.findById(idblog)
     blog.tieude_blog = tieude_blog
@@ -1112,126 +1143,55 @@ router.post('/editblog/:idblog', async (req, res) => {
 
     if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
       blog.noidung.forEach((nd, index) => {
-        nd.content = content[index]
-        nd.img = img[index]
-        nd.tieude = tieude[index]
+        if (content[index]) {
+          const updatedContent = replaceKeywordsWithLinks(
+            content[index],
+            keywords[index],
+            urlBase[index]
+          )
+          nd.content = updatedContent
+        }
+        nd.keywords = keywords[index]
+        nd.urlBase = urlBase[index]
+        if (img[index]) {
+          nd.img = img[index]
+        }
+        if (tieude[index]) {
+          nd.tieude = tieude[index]
+        }
       })
 
       for (let i = blog.noidung.length; i < content.length; i++) {
+        const updatedContent = replaceKeywordsWithLinks(
+          content[i],
+          keywords[i],
+          urlBase[i]
+        )
+
         blog.noidung.push({
-          content: content[i],
+          content: updatedContent,
           img: img[i],
-          tieude: tieude[i]
+          tieude: tieude[i],
+          keywords: keywords[i],
+          urlBase: urlBase[i]
         })
       }
     } else {
-      blog.noidung.push({ content, img, tieude })
-    }
-
-    await blog.save()
-    res.redirect('/main')
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-router.post('/editContentLink/:idblog', async (req, res) => {
-  try {
-    const { tieude_blog, img_blog, tieudeLink, name, link, imgLink, ndLink } =
-      req.body
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-
-    if (!blog) {
-      return res.status(404).json({ message: 'Blog không tồn tại' })
-    }
-
-    // Cập nhật thông tin chính của blog
-    if (tieude_blog !== undefined) blog.tieude_blog = tieude_blog
-    if (img_blog !== undefined) blog.img_blog = img_blog
-    if (tieude_blog !== undefined) blog.tieude_khongdau = unicode(tieude_blog)
-
-    // Xử lý cập nhật hoặc thêm mới các phần tử trong contentLink
-    if (Array.isArray(tieudeLink)) {
-      // Tạo một map để dễ dàng tra cứu các phần tử contentLink hiện có
-      const contentLinkMap = new Map()
-      blog.contentLink.forEach(cl => contentLinkMap.set(cl.tieude, cl))
-
-      tieudeLink.forEach((tieude, index) => {
-        let contentLink = contentLinkMap.get(tieude)
-
-        if (!contentLink) {
-          // Nếu contentLink chưa tồn tại, tạo mới
-          contentLink = {
-            tieude: tieude || '',
-            img: imgLink
-              ? Array.isArray(imgLink)
-                ? imgLink[index] || ''
-                : imgLink
-              : '',
-            noidung: []
-          }
-          blog.contentLink.push(contentLink)
-          contentLinkMap.set(tieude, contentLink) // Cập nhật map
-        } else {
-          // Cập nhật các thuộc tính hiện tại của contentLink
-          contentLink.tieude = tieude || contentLink.tieude
-          contentLink.img = imgLink
-            ? Array.isArray(imgLink)
-              ? imgLink[index]
-              : imgLink
-            : contentLink.img
-        }
-
-        // Xử lý ndLink, name, và link để đảm bảo chúng là chuỗi
-        const nd = Array.isArray(ndLink) ? ndLink[index] || '' : ndLink || ''
-        const aName = Array.isArray(name) ? name[index] || '' : name || ''
-        const aLink = Array.isArray(link) ? link[index] || '' : link || ''
-
-        // Chuyển đổi mảng thành chuỗi nếu cần
-        const newNoidung = {
-          nd: nd || '', // Đảm bảo nd là chuỗi
-          a: [
-            {
-              name: aName || '', // Đảm bảo name là chuỗi
-              link: aLink || '' // Đảm bảo link là chuỗi
-            }
-          ]
-        }
-
-        // Xóa noidung cũ nếu đã tồn tại và thêm mới
-        const noidungIndex = contentLink.noidung.findIndex(
-          nd => nd.nd === newNoidung.nd
-        )
-        if (noidungIndex >= 0) {
-          contentLink.noidung[noidungIndex] = newNoidung
-        } else {
-          contentLink.noidung.push(newNoidung)
-        }
-      })
-
-      // Xóa các contentLink không còn trong request
-      blog.contentLink = blog.contentLink.filter(cl =>
-        tieudeLink.includes(cl.tieude)
+      const updatedContent = replaceKeywordsWithLinks(
+        content,
+        keywords,
+        urlBase
       )
-    } else {
-      // Trường hợp tieudeLink không phải là mảng
-      const contentLink = {
-        tieude: tieudeLink || '',
-        img: imgLink || '',
-        noidung: [
-          {
-            nd: ndLink || '',
-            a: [
-              {
-                name: name || '',
-                link: link || ''
-              }
-            ]
-          }
-        ]
-      }
-      blog.contentLink = [contentLink]
+      blog.noidung = blog.noidung.slice(0, content.length)
+
+      blog.noidung = blog.noidung.map(nd => {
+        nd.content = updatedContent
+        nd.img = img
+        nd.tieude = tieude
+        nd.keywords = keywords
+        nd.urlBase = urlBase
+        return nd
+      })
     }
 
     await blog.save()
@@ -1241,9 +1201,6 @@ router.post('/editContentLink/:idblog', async (req, res) => {
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
-
-
-
 
 
 router.post('/deleteblog/:idblog', async (req, res) => {
