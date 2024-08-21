@@ -403,7 +403,7 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       mangloai: mangloai
     }
     // res.json(mangjson)
-    res.render('detail', { mangjson, allsp, listBl })
+    res.render('detail', { mangjson, allsp, listBl,nameloai,namesp })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
@@ -1018,7 +1018,7 @@ function replaceKeywordsWithLinks (content, keywords, urlBase) {
   // Thay thế từng từ khóa bằng thẻ <a>
   keywords.forEach(keyword => {
     if (keyword === '') {
-      return
+      return 
     }
     // Thoát các ký tự đặc biệt trong từ khóa
     const escapedKeyword = escapeRegExp(keyword)
@@ -1082,8 +1082,6 @@ router.post('/postblog', async (req, res) => {
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
-
-
 
 router.get('/getaddblog', async (req, res) => {
   res.render('addblog')
@@ -1216,80 +1214,6 @@ router.get('/cart', async (req, res) => {
   res.render('cart')
 })
 
-router.get('/getblog', async (req, res) => {
-  try {
-    const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 })
-    res.render('blog', { listBl })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-router.get('/editblog/:idblog', async (req, res) => {
-  try {
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    res.render('editBlog', {
-      blog
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-
-router.get('/editContentLink/:idblog', async (req, res) => {
-  try {
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    res.render('editContenLink', {
-      blog
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-
-
-router.post('/editblog/:idblog', async (req, res) => {
-  try {
-    const { tieude_blog, img_blog, tieude, content, img } = req.body
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    blog.tieude_blog = tieude_blog
-    blog.img_blog = img_blog
-
-    if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
-      blog.noidung.forEach((nd, index) => {
-        nd.content = content[index]
-        nd.img = img[index]
-        nd.tieude = tieude[index]
-      })
-
-      for (let i = blog.noidung.length; i < content.length; i++) {
-        blog.noidung.push({
-          content: content[i],
-          img: img[i],
-          tieude: tieude[i]
-        })
-      }
-    } else {
-      blog.noidung.push({ content, img, tieude })
-    }
-
-    await blog.save()
-    res.redirect('/main')
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-function removeVietnameseTones (str) {
-  str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D')
-  return str
-}
 
 router.get('/detail', async (req, res) => {
   res.render('detail')
