@@ -1119,7 +1119,7 @@ router.get('/editblog/:idblog', async (req, res) => {
       }
     })
 
-    res.render('home/editBlog.ejs', {
+    res.render('editBlog', {
       idblog,
       blog,
       tieude_blog: blogg.tieude_blog,
