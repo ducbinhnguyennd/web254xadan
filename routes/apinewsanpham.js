@@ -1156,9 +1156,7 @@ router.post('/editblog/:idblog', async (req, res) => {
         if (img[index]) {
           nd.img = img[index]
         }
-        if (tieude[index]) {
           nd.tieude = tieude[index]
-        }
       })
 
       for (let i = blog.noidung.length; i < content.length; i++) {
