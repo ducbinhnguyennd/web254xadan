@@ -387,7 +387,10 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       pinsac: loai.pinsac,
       congsac: loai.congsac,
       hang: loai.hang,
-      thongtin: loai.thongtin
+      thongtin: (typeof loai.thongtin === 'string'
+  ? loai.thongtin.replace(/\\n/g, '<br>')
+  : '') || ''
+
     }
     const mangloai = await Promise.all(
       sp.chitiet.map(async mang => {

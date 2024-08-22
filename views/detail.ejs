@@ -128,7 +128,7 @@
                                 <h4 class="mb-3">Mô tả sản phẩm</h4>
                                 <div id="content">
                                     <p class="collapsed">
-                                        <%= mangjson.spjson.thongtin %>
+                                        <%- mangjson.spjson.thongtin.replace(/\\n/g, "<br>") %>
                                     </p>
                                     <a href="#" id="toggleButton" style="color: red;">Xem thêm</a>
                                 </div>
