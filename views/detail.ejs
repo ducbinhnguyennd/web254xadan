@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>GIA HUY MOBILE - 254 XÃ ĐÀN</title>
+    <title>
+        <%= nameloai %> - Cam kết 100% Chính Hãng
+    </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -126,7 +128,7 @@
                                 <h4 class="mb-3">Mô tả sản phẩm</h4>
                                 <div id="content">
                                     <p class="collapsed">
-                                        <%= mangjson.spjson.thongtin %>
+                                        <%- mangjson.spjson.thongtin.replace(/\\n/g, "<br>") %>
                                     </p>
                                     <a href="#" id="toggleButton" style="color: red;">Xem thêm</a>
                                 </div>
@@ -306,7 +308,9 @@
                 <a href="#" class="btn btn-square mb-5" onclick="makeCall()"> <img class="anhfacezalo" src="/img/phone2.png" alt=""></a>
             </div>
 
-
+            <script>
+                document.title = "<%= namesp %>"
+            </script>
             <!-- JavaScript Libraries -->
             <script src="https://code.jquery.com/jquery-3.4.1.min.js "></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js "></script>
@@ -320,6 +324,7 @@
             <!-- Template Javascript -->
             <script src="https://www.giahuystore.com/js/main.js"></script>
             <script src="https://www.giahuystore.com/js/jsdetail.js "></script>
+
 </body>
 
 </html>

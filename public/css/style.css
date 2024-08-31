@@ -167,13 +167,13 @@
         }
         
         a {
-            color: #00ff0d;
+            color: #006eff;
             text-decoration: none;
             background-color: transparent;
         }
         
         a:hover {
-            color: #e6b400;
+            color: #003985;
             text-decoration: underline;
         }
         

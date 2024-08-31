@@ -13,9 +13,6 @@
     <meta property="og:image" content="<%= image_blog %>">
     <meta name="google-site-verification" content="cEWUP586tFEVnlKELXd0QtwcmvGXN_33FgZ8ttvqTY4" />
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -73,38 +70,14 @@
                             </div>
                             <% }); %>
                     </div>
-                    <div>
-                        <% contentLink.splice(0.5).forEach((item) => { %>
-                            <div class="mb-4">
-                                <h6 itemprop="name" class="display-7 text-uppercase" style="font-weight: bold;">
-                                    <%= item.tieude %>
-                                </h6>
-                                <p style="color: black">
-                                    <% item.noidung.forEach((i) => { %>
-                                        <%- i.nd.replace(/\\n/g, "<br>") %>
-                                            <% i.a.forEach((j) => { %>
-                                                <a href="<%= j.link %>">
-                                                    <%= j.name %>
-                                                </a>
-                                                <% }); %>
-                                                    <% }); %>
-                                </p>
-                                <% if (item.img) { %>
-                                    <div class="product-preview mb-3 d-flex justify-content-center">
-                                        <img src="<%= item.img %>" class="sanpham w-50 h-50">
-                                    </div>
-                                    <% } %>
-                            </div>
-                            <% }); %>
-                    </div>
                 </div>
                 <div class="container">
                     <h3>Xem Thêm</h3>
                     <li>
-                        <a href="http://localhost:8080/contentBlog/Phone-SE-4-se-ra-mat-vao-dau-nam-2025%2C-co-man-hinh-OLED-va-Appe-Inteligence" style="color: rgb(0, 125, 228);">PHONE SE 4 SẼ RA MẮT VÀO ĐẦU NĂM 2025, CÓ MÀN HÌNH OLED VÀ APPE INTELIGENCE</a>
+                        <a href="https://www.giahuystore.com/contentBlog/Top-4-Ung-Dung-Khong-The-Bo-Lo-Tren-iPhone-Cua-Ban-" style="color: rgb(0, 125, 228);">Top 4 Ứng Dụng Không Thể Bỏ Lỡ Trên iPhone Của Bạn</a>
                     </li>
                     <li>
-                        <a href="http://localhost:8080/contentBlog/1OS-18.1-Beta-2-va-1OS-18-Beta-6-ra-mat%2C-hay-cung-minh-kham-pha-tat-tan-tat-cac-tinh-nang-moi" style="color: rgb(0, 125, 228);">1OS 18.1 BETA 2 VÀ 1OS 18 BETA 6 RA MẮT, HÃY CÙNG MÌNH KHÁM PHÁ TẤT TẦN TẬT CÁC TÍNH NĂNG MỚI</a>
+                        <a href="https://www.giahuystore.com/contentBlog/Che-do-quay-time-lapse-la-gi-Va-Cach-De-Co-The-Quay-time-lapse-" style="color: rgb(0, 125, 228);">Chế độ quay time lapse là gì Và Cách Để Có Thể Quay time lapse</a>
                     </li>
                 </div>
                 <div class="text-center mt-4">

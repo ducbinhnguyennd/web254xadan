@@ -139,16 +139,16 @@ router.get('/', async (req, res) => {
     const sp = await Promise.all(
       allsp.map(async s => {
         let img
-        if (s.name === 'iPhone 13 Pro Max') {
+        if (s.name === '13 PRO MAX') {
           img = '/img/iphone13.png'
         }
-        if (s.name === 'iPhone 12 Pro Max') {
+        if (s.name === '12 PRO MAX') {
           img = '/img/iphone12.jpg'
         }
-        if (s.name === 'iPhone 14 Pro Max') {
+        if (s.name === '14 PRO MAX') {
           img = '/img/iphone14.png'
         }
-        if (s.name === 'iPhone 11 Pro Max') {
+        if (s.name === '11 PRO MAX') {
           img = '/img/iphone11.jpg'
         }
         return {
@@ -162,8 +162,8 @@ router.get('/', async (req, res) => {
     const tenspjson2 = await Promise.all(
       allsp.map(async tensp => {
         if (
-          tensp.name === 'iPhone 13 Pro Max' ||
-          tensp.name === 'iPhone 14 Pro Max'
+          tensp.name === '13 PRO MAX' ||
+          tensp.name === '14 PRO MAX'
         ) {
           const chitietspJson = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
@@ -190,8 +190,8 @@ router.get('/', async (req, res) => {
     const tenspjson1 = await Promise.all(
       allsp.map(async tensp => {
         if (
-          tensp.name === 'iPhone 12 Pro Max' ||
-          tensp.name === 'iPhone 11 Pro Max'
+          tensp.name === '11 PRO MAX' ||
+          tensp.name === '12 PRO MAX'
         ) {
           const chitietspJson1 = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
@@ -232,6 +232,7 @@ router.get('/', async (req, res) => {
       danhgiaIsReadTrue,
       sp
     })
+    console.log(tenspjson1)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
@@ -386,7 +387,10 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       pinsac: loai.pinsac,
       congsac: loai.congsac,
       hang: loai.hang,
-      thongtin: loai.thongtin
+      thongtin: (typeof loai.thongtin === 'string'
+  ? loai.thongtin.replace(/\\n/g, '<br>')
+  : '') || ''
+
     }
     const mangloai = await Promise.all(
       sp.chitiet.map(async mang => {
@@ -402,7 +406,7 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       mangloai: mangloai
     }
     // res.json(mangjson)
-    res.render('detail', { mangjson, allsp, listBl })
+    res.render('detail', { mangjson, allsp, listBl,nameloai,namesp })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
@@ -979,32 +983,14 @@ router.get('/contentBlog/:tieude', async (req, res) => {
 
     const content = blog.noidung.map(noidung => {
       return {
-        tieude: noidung.tieude,
-        content: noidung.content.replace(/\\n/g, '<br>'),
+        tieude: noidung.tieude || '',
+        content: (typeof noidung.content === 'string' ? noidung.content.replace(/\\n/g, '<br>') : '') || '',
         img: noidung.img || ''
-      }
-    })
-    const contentLink = blog.contentLink.map(noidung => {
-      return {
-        tieude: noidung.tieude,
-        noidung: noidung.noidung.map(noidung => {
-          return {
-            nd: noidung.nd.replace(/\\n/g, '<br>'),
-            a: noidung.a.map(a => {
-              return {
-                name: a.name,
-                link: a.link
-              }
-            })
-          }
-        }),
-        img: noidung.img
       }
     })
 
     res.render('chitietblog', {
       content,
-      contentLink,
       tieude: blog.tieude_blog,
       listBl,
       image_blog: blog.img_blog,
@@ -1016,20 +1002,41 @@ router.get('/contentBlog/:tieude', async (req, res) => {
   }
 })
 
+function escapeRegExp (string) {
+  // Thoát các ký tự đặc biệt trong biểu thức chính quy
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function replaceKeywordsWithLinks (content, keywords, urlBase) {
+  // Nếu keywords không phải là mảng, chuyển đổi nó thành mảng chứa một từ khóa duy nhất
+  if (!Array.isArray(keywords)) {
+    keywords = [keywords]
+  }
+
+  // Nếu không có từ khóa, trả lại nội dung gốc
+  if (!keywords || keywords.length === 0) {
+    return content
+  }
+
+  // Thay thế từng từ khóa bằng thẻ <a>
+  keywords.forEach(keyword => {
+    if (keyword === '') {
+      return 
+    }
+    // Thoát các ký tự đặc biệt trong từ khóa
+    const escapedKeyword = escapeRegExp(keyword)
+    // Tạo một biểu thức chính quy để tìm từ khóa
+    const regex = new RegExp(`\\b${escapedKeyword}\\b`, 'gi')
+    // Thay thế từ khóa bằng thẻ <a> với đường link
+    content = content.replace(regex, `<a href="${urlBase}">${keyword}</a>`)
+  })
+
+  return content
+}
 router.post('/postblog', async (req, res) => {
   try {
-    const {
-      tieude_blog,
-      img,
-      content,
-      tieude,
-      img_blog,
-      tieudeLink,
-      name,
-      link,
-      imgLink,
-      ndLink
-    } = req.body
+    const { tieude_blog, img, content, tieude, img_blog, keywords, urlBase } =
+      req.body
 
     const tieude_khongdau = unicode(tieude_blog)
     const blog = new myMDBlog.blogModel({
@@ -1041,66 +1048,37 @@ router.post('/postblog', async (req, res) => {
     // Thêm các nội dung blog
     if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
       for (let i = 0; i < content.length; i++) {
+        const updatedContent = replaceKeywordsWithLinks(
+          content[i],
+          keywords[i],
+          urlBase[i]
+        )
+
         blog.noidung.push({
-          content: content[i],
+          content: updatedContent,
           img: img[i],
-          tieude: tieude[i]
+          tieude: tieude[i],
+          keywords: keywords[i],
+          urlBase: urlBase[i]
         })
       }
     } else {
-      blog.noidung.push({ content, img, tieude })
-    }
+      const updatedContent = replaceKeywordsWithLinks(
+        content,
+        keywords,
+        urlBase
+      )
 
-    // Xử lý contentLink và noidung
-    let currentContentLinkIndex = -1
-
-    if (Array.isArray(tieudeLink)) {
-      for (let i = 0; i < ndLink.length; i++) {
-        if (tieudeLink[i] || i === 0 || currentContentLinkIndex === -1) {
-          // Khi có tieudeLink mới, hoặc khi đây là lần đầu tiên, tạo một newContentLink mới
-          const newContentLink = {
-            tieude: tieudeLink[i] || tieudeLink[currentContentLinkIndex],
-            img: imgLink[i] || tieudeLink[currentContentLinkIndex],
-            noidung: []
-          }
-          blog.contentLink.push(newContentLink)
-          currentContentLinkIndex = blog.contentLink.length - 1
-        }
-
-        // Thêm noidung vào contentLink hiện tại
-        const newNoidung = {
-          nd: Array.isArray(ndLink) ? ndLink[i] : ndLink,
-          a: [
-            {
-              name: Array.isArray(name) ? name[i] : name,
-              link: Array.isArray(link) ? link[i] : link
-            }
-          ]
-        }
-        blog.contentLink[currentContentLinkIndex].noidung.push(newNoidung)
-      }
-    } else {
-      // Trường hợp tieudeLink không phải là mảng
-      const newContentLink = {
-        tieude: tieudeLink,
-        img: imgLink,
-        noidung: []
-      }
-      const newNoidung = {
-        nd: ndLink,
-        a: [
-          {
-            name: name,
-            link: link
-          }
-        ]
-      }
-      newContentLink.noidung.push(newNoidung)
-      blog.contentLink.push(newContentLink)
+      blog.noidung.push({
+        content: updatedContent,
+        img,
+        tieude,
+        keywords,
+        keywords
+      })
     }
 
     await blog.save()
-    console.log(blog.contentLink)
     res.redirect('/main')
   } catch (error) {
     console.error(error)
@@ -1124,9 +1102,29 @@ router.get('/getblog', async (req, res) => {
 router.get('/editblog/:idblog', async (req, res) => {
   try {
     const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
+    const blogg = await myMDBlog.blogModel.findById(idblog)
+
+    // Hàm để loại bỏ tất cả các thẻ <a> khỏi nội dung
+    function removeAllLinks (content) {
+      // Biểu thức chính quy để tìm và loại bỏ tất cả các thẻ <a> cùng với nội dung của chúng
+      return content.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1')
+    }
+
+    const blog = blogg.noidung.map(bl => {
+      return {
+        content: removeAllLinks(bl.content),
+        img: bl.img,
+        tieude: bl.tieude,
+        keywords: bl.keywords,
+        urlBase: bl.urlBase
+      }
+    })
+
     res.render('editBlog', {
-      blog
+      idblog,
+      blog,
+      tieude_blog: blogg.tieude_blog,
+      img_blog: blogg.img_blog
     })
   } catch (error) {
     console.error(error)
@@ -1136,7 +1134,8 @@ router.get('/editblog/:idblog', async (req, res) => {
 
 router.post('/editblog/:idblog', async (req, res) => {
   try {
-    const { tieude_blog, img_blog, tieude, content, img } = req.body
+    const { tieude_blog, img_blog, tieude, content, img, keywords, urlBase } =
+      req.body
     const idblog = req.params.idblog
     const blog = await myMDBlog.blogModel.findById(idblog)
     blog.tieude_blog = tieude_blog
@@ -1145,20 +1144,53 @@ router.post('/editblog/:idblog', async (req, res) => {
 
     if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
       blog.noidung.forEach((nd, index) => {
-        nd.content = content[index]
-        nd.img = img[index]
-        nd.tieude = tieude[index]
+        if (content[index]) {
+          const updatedContent = replaceKeywordsWithLinks(
+            content[index],
+            keywords[index],
+            urlBase[index]
+          )
+          nd.content = updatedContent
+        }
+        nd.keywords = keywords[index]
+        nd.urlBase = urlBase[index]
+        if (img[index]) {
+          nd.img = img[index]
+        }
+          nd.tieude = tieude[index]
       })
 
       for (let i = blog.noidung.length; i < content.length; i++) {
+        const updatedContent = replaceKeywordsWithLinks(
+          content[i],
+          keywords[i],
+          urlBase[i]
+        )
+
         blog.noidung.push({
-          content: content[i],
+          content: updatedContent,
           img: img[i],
-          tieude: tieude[i]
+          tieude: tieude[i],
+          keywords: keywords[i],
+          urlBase: urlBase[i]
         })
       }
     } else {
-      blog.noidung.push({ content, img, tieude })
+      const updatedContent = replaceKeywordsWithLinks(
+        content,
+        keywords,
+        urlBase
+      )
+      blog.noidung = blog.noidung.slice(0, content.length)
+
+      blog.noidung = blog.noidung.map(nd => {
+        nd.content = updatedContent
+        nd.img = img
+        nd.tieude = tieude
+        nd.keywords = keywords
+        nd.urlBase = urlBase
+        return nd
+      })
     }
 
     await blog.save()
@@ -1168,6 +1200,7 @@ router.post('/editblog/:idblog', async (req, res) => {
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
 })
+
 
 router.post('/deleteblog/:idblog', async (req, res) => {
   try {
@@ -1184,66 +1217,6 @@ router.get('/cart', async (req, res) => {
   res.render('cart')
 })
 
-router.get('/getblog', async (req, res) => {
-  try {
-    const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 })
-    res.render('blog', { listBl })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-router.get('/editblog/:idblog', async (req, res) => {
-  try {
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    res.render('editBlog', {
-      blog
-    })
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-
-router.post('/editblog/:idblog', async (req, res) => {
-  try {
-    const { tieude_blog, img_blog, tieude, content, img } = req.body
-    const idblog = req.params.idblog
-    const blog = await myMDBlog.blogModel.findById(idblog)
-    blog.tieude_blog = tieude_blog
-    blog.img_blog = img_blog
-
-    if (Array.isArray(content) && Array.isArray(img) && Array.isArray(tieude)) {
-      blog.noidung.forEach((nd, index) => {
-        nd.content = content[index]
-        nd.img = img[index]
-        nd.tieude = tieude[index]
-      })
-
-      for (let i = blog.noidung.length; i < content.length; i++) {
-        blog.noidung.push({
-          content: content[i],
-          img: img[i],
-          tieude: tieude[i]
-        })
-      }
-    } else {
-      blog.noidung.push({ content, img, tieude })
-    }
-
-    await blog.save()
-    res.redirect('/main')
-  } catch (error) {
-    console.error(error)
-    res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
-  }
-})
-function removeVietnameseTones (str) {
-  str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  str = str.replace(/đ/g, 'd').replace(/Đ/g, 'D')
-  return str
-}
 
 router.get('/detail', async (req, res) => {
   res.render('detail')

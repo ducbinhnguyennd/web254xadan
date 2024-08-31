@@ -4,7 +4,7 @@ const checkAuth = (req, res, next) => {
     return res.redirect('/login');
   }
   try {
-    const decoded = jwt.verify(req.session.token, 'mysecretkey', { expiresIn: '10m' });
+    const decoded = jwt.verify(req.session.token, 'mysecretkey', { expiresIn: '1h' });
     req.userData = decoded;
     next();
   } catch (error) {

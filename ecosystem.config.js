@@ -1,0 +1,12 @@
+module.exports={
+    apps:[
+        {
+            name:'giahuystore',
+            script:'./index.js',
+            env:{
+                NODE_ENV:'production',
+                PORT:1001
+            }
+        }
+    ]
+}

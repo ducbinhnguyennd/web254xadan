@@ -1,0 +1,73 @@
+<%- include('headerman.ejs') %>
+    <div class="container">
+        <h2>
+            <a href="/"><img style="width: 35px;" src="https://cdn-icons-png.flaticon.com/512/25/25694.png">Sửa blog</a>
+        </h2>
+
+        <form action="/editContentLink/<%= blog._id %>" method="post">
+            <form class="px-4 py-3">
+                <br>
+                <label class="form-label">Tiêu đề Blog</label>
+                <input type="text" name="tieude_blog" class="form-control" placeholder="Nhập tiêu đề blog" value="<%= blog.tieude_blog %>"><br>
+                <label class="form-label">Ảnh Blog</label>
+                <input type="text" name="img_blog" class="form-control" placeholder="Nhập link ảnh blog" value="<%= blog.img_blog %>"><br>
+                <h5>Nội Dung</h5>
+                <% blog.contentLink.forEach((row)=> { %>
+                    <div id="contentLinkContainer">
+                        <div class="contentLink">
+                            <label class="form-label">Tiêu đề Content Link</label>
+                            <input type="text" name="tieudeLink" class="form-control" value="<%= row.tieude %>" placeholder="Nhập tiêu đề content link"><br>
+                            <h5>Nội Dung ContentLink</h5>
+                            <% row.noidung.forEach((noidung)=> { %>
+                                <label class="form-label">Nội dung</label>
+                                <input type="text" name="ndLink" class="form-control" value="<%= noidung.nd %>" placeholder="Nhập nội dung"><br>
+                                <h5>Đường Link</h5>
+                                <% noidung.a.forEach((a)=> { %>
+                                    <label class="form-label">Tên liên kết</label>
+                                    <input type="text" name="name" class="form-control" value="<%= a.name %>" placeholder="Nhập tên liên kết"><br>
+                                    <label class="form-label">Liên kết</label>
+                                    <input type="text" name="link" class="form-control" value="<%= a.link %>" placeholder="Nhập URL liên kết"><br>
+                                    <% }); %>
+                                        <hr style="font-weight: bold;  border: 2px solid rgb(0, 0, 0);">
+                                        <% }); %>
+                                            <label class="form-label">Ảnh liên kết</label>
+                                            <input type="text" name="imgLink" class="form-control" value="<%= row.img %>" placeholder="Nhập link ảnh liên kết"><br>
+                        </div>
+                    </div>
+                    <hr style="font-weight: bold;  border: 2px solid rgb(248, 0, 0);">
+                    <% }); %>
+                        <input type="button" class="btn btn-danger" value="Thêm nội dung blog" onclick="themContentLink()">
+                        <button class="btn btn-danger" type="submit">Lưu</button>
+            </form>
+        </form>
+        <script>
+            function themContentLink() {
+                var newDiv = document.createElement("div");
+                newDiv.className = "contentLink";
+
+                // Thêm nội dung vào thẻ div mới
+                newDiv.innerHTML = `
+                <label class="form-label">Tiêu đề Content Link</label>
+                <input type="text" name="tieudeLink" class="form-control" placeholder="Nhập tiêu đề content link"><br>
+                <label class="form-label">Nội dung</label>
+                <input type="text" name="ndLink" class="form-control" placeholder="Nhập nội dung"><br>
+                <label class="form-label">Tên liên kết</label>
+                <input type="text" name="name" class="form-control" placeholder="Nhập tên liên kết"><br>
+                <label class="form-label">Liên kết</label>
+                <input type="text" name="link" class="form-control" placeholder="Nhập URL liên kết"><br>
+                <label class="form-label">Ảnh liên kết</label>
+                <input type="text" name="imgLink" class="form-control" placeholder="Nhập link ảnh liên kết"><br>
+                <button style="margin-bottom:5px" type="button" class="btn btn-danger" onclick="xoaContentLink(this)">Xóa Content Link</button>
+                <hr style="font-weight: bold; border: 2px solid black;">
+            `;
+
+                // Thêm thẻ div mới vào trong container
+                document.getElementById("contentLinkContainer").appendChild(newDiv);
+            }
+
+            function xoaContentLink(button) {
+                // Xóa thẻ div chứa nút bấm
+                button.parentElement.remove();
+            }
+        </script>
+    </div>

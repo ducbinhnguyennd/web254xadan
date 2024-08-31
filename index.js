@@ -3,20 +3,15 @@ const createError = require('http-errors')
 var path = require('path')
 var session = require('express-session')
 var settingsRouter = require('./routes/settings.route')
-var accountsRouter = require('./routes/accounts.route')
-var apiAccRouter = require('./routes/acc.api')
-var sitmaprouter = require('./routes/sitemap.xml')
 var homeRouter = require('./routes/home.route')
 var apinewsanpham = require('./routes/apinewsanpham')
 var methodOverride = require('method-override')
 var bodyParser = require('body-parser')
-const { log } = require('console')
 const app = express()
 const MongoStore = require('connect-mongo')
 var db = require('./models/db')
 const uri =
-  'mongodb+srv://ducbinhnguyennd:ducbinhnguyennd@cluster0.geuahvt.mongodb.net/giahuystore?retryWrites=true&w=majority'
-
+  'mongodb+srv://ducbinhnguyennd:ducbinhnguyennd@cluster0.sck9o.mongodb.net/giahuystore?retryWrites=true&w=majority'
 const mongoStoreOptions = {
   mongooseConnection: db.mongoose.connection,
   mongoUrl: uri,
@@ -52,24 +47,24 @@ app.use('/', apinewsanpham)
 
 app.use(express.static(path.join(__dirname, '/public')))
 
-// Middleware để log địa chỉ IP của máy khách
-app.use((req, res, next) => {
-  // Lấy địa chỉ IP từ header x-forwarded-for hoặc từ remoteAddress
-  const forwardedFor = req.headers['x-forwarded-for']
-  const clientIp = forwardedFor
-    ? forwardedFor.split(',')[0]
-    : req.connection.remoteAddress
+// // Middleware để log địa chỉ IP của máy khách
+// app.use((req, res, next) => {
+//   // Lấy địa chỉ IP từ header x-forwarded-for hoặc từ remoteAddress
+//   const forwardedFor = req.headers['x-forwarded-for']
+//   const clientIp = forwardedFor
+//     ? forwardedFor.split(',')[0]
+//     : req.connection.remoteAddress
 
-  // Nếu địa chỉ IP là loopback IPv6, chuyển đổi nó thành IPv4 loopback
-  const normalizedIp = clientIp === '::1' ? '127.0.0.1' : clientIp
+//   // Nếu địa chỉ IP là loopback IPv6, chuyển đổi nó thành IPv4 loopback
+//   const normalizedIp = clientIp === '::1' ? '127.0.0.1' : clientIp
 
-  console.log(`Client IP: ${normalizedIp}`)
-  next()
-})
+//   console.log(`Client IP: ${normalizedIp}`)
+//   next()
+// })
 
-app.get('/testcheckip', (req, res) => {
-  res.send('Hello World!')
-})
+// app.get('/testcheckip', (req, res) => {
+//   res.send('Hello World!')
+// })
 
 app.use(function (req, res, next) {
   next(createError(404))
