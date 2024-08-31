@@ -1,7 +1,7 @@
 module.exports={
     apps:[
         {
-            name:'DOC-BAO',
+            name:'giahuystore',
             script:'./index.js',
             env:{
                 NODE_ENV:'production',
