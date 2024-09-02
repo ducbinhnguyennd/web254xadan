@@ -161,10 +161,7 @@ router.get('/', async (req, res) => {
 
     const tenspjson2 = await Promise.all(
       allsp.map(async tensp => {
-        if (
-          tensp.name === '13 PRO MAX' ||
-          tensp.name === '14 PRO MAX'
-        ) {
+        if (tensp.name === '13 PRO MAX' || tensp.name === '14 PRO MAX') {
           const chitietspJson = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
               return {
@@ -189,10 +186,7 @@ router.get('/', async (req, res) => {
 
     const tenspjson1 = await Promise.all(
       allsp.map(async tensp => {
-        if (
-          tensp.name === '11 PRO MAX' ||
-          tensp.name === '12 PRO MAX'
-        ) {
+        if (tensp.name === '11 PRO MAX' || tensp.name === '12 PRO MAX') {
           const chitietspJson1 = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
               return {
@@ -320,16 +314,16 @@ router.get('/getspchitiet/:nameloaisp', async (req, res) => {
       allsp.map(async s => {
         let img
         if (s.name === 'iPhone 13 Pro Max') {
-          img = 'https://www.giahuystore.com/img/iphone13.png'
+          img = 'https://giahuystore.com/img/iphone13.png'
         }
         if (s.name === 'iPhone 12 Pro Max') {
-          img = 'https://www.giahuystore.com/img/iphone12.jpg'
+          img = 'https://giahuystore.com/img/iphone12.jpg'
         }
         if (s.name === 'iPhone 14 Pro Max') {
-          img = 'https://www.giahuystore.com/img/iphone14.png'
+          img = 'https://giahuystore.com/img/iphone14.png'
         }
         if (s.name === 'iPhone 11 Pro Max') {
-          img = 'https://www.giahuystore.com/img/iphone11.jpg'
+          img = 'https://giahuystore.com/img/iphone11.jpg'
         }
         return {
           id: s._id,
@@ -387,10 +381,10 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       pinsac: loai.pinsac,
       congsac: loai.congsac,
       hang: loai.hang,
-      thongtin: (typeof loai.thongtin === 'string'
-  ? loai.thongtin.replace(/\\n/g, '<br>')
-  : '') || ''
-
+      thongtin:
+        (typeof loai.thongtin === 'string'
+          ? loai.thongtin.replace(/\\n/g, '<br>')
+          : '') || ''
     }
     const mangloai = await Promise.all(
       sp.chitiet.map(async mang => {
@@ -406,7 +400,7 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       mangloai: mangloai
     }
     // res.json(mangjson)
-    res.render('detail', { mangjson, allsp, listBl,nameloai,namesp })
+    res.render('detail', { mangjson, allsp, listBl, nameloai, namesp })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
@@ -984,7 +978,10 @@ router.get('/contentBlog/:tieude', async (req, res) => {
     const content = blog.noidung.map(noidung => {
       return {
         tieude: noidung.tieude || '',
-        content: (typeof noidung.content === 'string' ? noidung.content.replace(/\\n/g, '<br>') : '') || '',
+        content:
+          (typeof noidung.content === 'string'
+            ? noidung.content.replace(/\\n/g, '<br>')
+            : '') || '',
         img: noidung.img || ''
       }
     })
@@ -1021,7 +1018,7 @@ function replaceKeywordsWithLinks (content, keywords, urlBase) {
   // Thay thế từng từ khóa bằng thẻ <a>
   keywords.forEach(keyword => {
     if (keyword === '') {
-      return 
+      return
     }
     // Thoát các ký tự đặc biệt trong từ khóa
     const escapedKeyword = escapeRegExp(keyword)
@@ -1157,7 +1154,7 @@ router.post('/editblog/:idblog', async (req, res) => {
         if (img[index]) {
           nd.img = img[index]
         }
-          nd.tieude = tieude[index]
+        nd.tieude = tieude[index]
       })
 
       for (let i = blog.noidung.length; i < content.length; i++) {
@@ -1201,7 +1198,6 @@ router.post('/editblog/:idblog', async (req, res) => {
   }
 })
 
-
 router.post('/deleteblog/:idblog', async (req, res) => {
   try {
     const idblog = req.params.idblog
@@ -1216,7 +1212,6 @@ router.post('/deleteblog/:idblog', async (req, res) => {
 router.get('/cart', async (req, res) => {
   res.render('cart')
 })
-
 
 router.get('/detail', async (req, res) => {
   res.render('detail')
