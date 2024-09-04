@@ -82,11 +82,13 @@
                                 <div class="product-action">
                                     <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629" aria-label="Message"><i class="fab fa-facebook-messenger"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href="" onclick="makeCall()" aria-label="Call"><i class="fa fa-phone"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(nameloaisp).replace(/%20/g, '-') %>"  aria-label="Chi tiet"><i class="fa fa-exclamation-circle"></i></a>
+                                    <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(nameloaisp).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>" aria-label="Chi tiet"><i class="fa fa-exclamation-circle"></i></a>
                                 </div>
                             </div>
                             <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(nameloaisp).replace(/%20/g, '-') %>  ">
+                                <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(row.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(nameloaisp).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>">
                                     <%= row.name %>
                                 </a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">

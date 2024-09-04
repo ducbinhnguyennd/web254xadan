@@ -188,11 +188,13 @@
                                         <div class="product-action">
                                             <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629" aria-label="Message"><i class="fab fa-facebook-messenger"></i></a>
                                             <a class="btn btn-outline-dark btn-square" href="" onclick="makeCall()" aria-label="Call"><i class="fa fa-phone" ></i></a>
-                                            <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>" aria-label="chi tiết"><i class="fa fa-exclamation-circle"></i></a>
+                                            <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(rowname).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>" aria-label="chi tiết"><i class="fa fa-exclamation-circle"></i></a>
                                         </div>
                                     </div>
                                     <div class="text-center py-4">
-                                        <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>">
+                                        <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(rowname).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>">
                                             <%= item.name %>
                                         </a>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
@@ -266,11 +268,13 @@
                                                 <div class="product-action">
                                                     <a class="btn btn-outline-dark btn-square" href="https://www.facebook.com/messages/t/111039721823629" aria-label="Message"><i class="fab fa-facebook-messenger"></i></a>
                                                     <a class="btn btn-outline-dark btn-square" href="" onclick="makeCall()" aria-label="Call"><i class="fa fa-phone"></i></a>
-                                                    <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>" aria-label="chi tieets"><i class="fa fa-exclamation-circle"></i></a>
+                                                    <a class="btn btn-outline-dark btn-square" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(rowname).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>" aria-label="chi tieets"><i class="fa fa-exclamation-circle"></i></a>
                                                 </div>
                                             </div>
                                             <div class="text-center py-4">
-                                                <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-') %>/<%=encodeURIComponent(rowname).replace(/%20/g, '-') %>">
+                                                <a class="h6 text-decoration-none text-truncate" href="/getchitiet/<%= encodeURIComponent(item.name).replace(/%20/g, '-').replace(/%25/g, 'pt' ) %>/<%=
+                                  encodeURIComponent(rowname).replace(/%20/g, '-' ).replace(/%25/g, 'pt' ) %>">
                                                     <%= item.name %>
                                                 </a>
                                                 <div class="d-flex align-items-center justify-content-center mt-2">

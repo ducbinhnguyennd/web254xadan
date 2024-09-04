@@ -161,10 +161,7 @@ router.get('/', async (req, res) => {
 
     const tenspjson2 = await Promise.all(
       allsp.map(async tensp => {
-        if (
-          tensp.name === '13 PRO MAX' ||
-          tensp.name === '14 PRO MAX'
-        ) {
+        if (tensp.name === '13 PRO MAX' || tensp.name === '14 PRO MAX') {
           const chitietspJson = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
               return {
@@ -189,10 +186,7 @@ router.get('/', async (req, res) => {
 
     const tenspjson1 = await Promise.all(
       allsp.map(async tensp => {
-        if (
-          tensp.name === '11 PRO MAX' ||
-          tensp.name === '12 PRO MAX'
-        ) {
+        if (tensp.name === '11 PRO MAX' || tensp.name === '12 PRO MAX') {
           const chitietspJson1 = await Promise.all(
             tensp.chitietsp.map(async chitietsp => {
               return {
@@ -310,7 +304,9 @@ router.get('/getchitietsp/:idloaisp', async (req, res) => {
 
 router.get('/getspchitiet/:nameloaisp', async (req, res) => {
   try {
-    const nameloaisp = req.params.nameloaisp.replace(/-/g, ' ')
+    const nameloaisp = req.params.nameloaisp
+      .replace(/-/g, ' ')
+      .replace(/pt/g, '%')
     const loaisp = await LoaiSP.TenSP.findOne({ name: nameloaisp })
     const allsp = await LoaiSP.TenSP.find().populate('chitietsp')
     if (!loaisp) {
@@ -360,8 +356,8 @@ router.get('/getspchitiet/:nameloaisp', async (req, res) => {
 
 router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
   try {
-    const namesp = req.params.namesp.replace(/-/g, ' ')
-    const nameloai = req.params.nameloai.replace(/-/g, ' ')
+    const namesp = req.params.namesp.replace(/-/g, ' ').replace(/pt/g, '%')
+    const nameloai = req.params.nameloai.replace(/-/g, ' ').replace(/pt/g, '%')
     const sp = await Sp.ChitietSp.findOne({ name: namesp })
     const listBl = await myMDBlog.blogModel.find().sort({ _id: -1 })
 
@@ -387,10 +383,10 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       pinsac: loai.pinsac,
       congsac: loai.congsac,
       hang: loai.hang,
-      thongtin: (typeof loai.thongtin === 'string'
-  ? loai.thongtin.replace(/\\n/g, '<br>')
-  : '') || ''
-
+      thongtin:
+        (typeof loai.thongtin === 'string'
+          ? loai.thongtin.replace(/\\n/g, '<br>')
+          : '') || ''
     }
     const mangloai = await Promise.all(
       sp.chitiet.map(async mang => {
@@ -406,7 +402,7 @@ router.get('/getchitiet/:namesp/:nameloai', async (req, res) => {
       mangloai: mangloai
     }
     // res.json(mangjson)
-    res.render('detail', { mangjson, allsp, listBl,nameloai,namesp })
+    res.render('detail', { mangjson, allsp, listBl, nameloai, namesp })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
@@ -968,10 +964,8 @@ router.post('/duyetdanhgia/:iddanhgia', async (req, res) => {
 
 router.get('/contentBlog/:tieude', async (req, res) => {
   try {
-    const tieude_khongdau = decodeURIComponent(req.params.tieude).replace(
-      /-/g,
-      ' '
-    )
+    const tieude_khongdau = decodeURIComponent(req.params.tieude)
+      .replace(/-/g, ' ')
     const blog = await myMDBlog.blogModel.findOne({ tieude_khongdau })
     const allsp = await LoaiSP.TenSP.find().populate('chitietsp')
 
@@ -984,7 +978,10 @@ router.get('/contentBlog/:tieude', async (req, res) => {
     const content = blog.noidung.map(noidung => {
       return {
         tieude: noidung.tieude || '',
-        content: (typeof noidung.content === 'string' ? noidung.content.replace(/\\n/g, '<br>') : '') || '',
+        content:
+          (typeof noidung.content === 'string'
+            ? noidung.content.replace(/\\n/g, '<br>')
+            : '') || '',
         img: noidung.img || ''
       }
     })
@@ -1006,6 +1003,14 @@ function escapeRegExp (string) {
   // Thoát các ký tự đặc biệt trong biểu thức chính quy
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+function removeSpecialChars (str) {
+  // Danh sách các ký tự đặc biệt bạn muốn xóa
+  const specialChars = /[:+,!@#$%^&*()]/g // Thay đổi biểu thức chính quy theo các ký tự bạn muốn xóa
+
+  // Xóa các ký tự đặc biệt
+  return str.replace(specialChars, '')
+}
+
 
 function replaceKeywordsWithLinks (content, keywords, urlBase) {
   // Nếu keywords không phải là mảng, chuyển đổi nó thành mảng chứa một từ khóa duy nhất
@@ -1021,7 +1026,7 @@ function replaceKeywordsWithLinks (content, keywords, urlBase) {
   // Thay thế từng từ khóa bằng thẻ <a>
   keywords.forEach(keyword => {
     if (keyword === '') {
-      return 
+      return
     }
     // Thoát các ký tự đặc biệt trong từ khóa
     const escapedKeyword = escapeRegExp(keyword)
@@ -1038,7 +1043,8 @@ router.post('/postblog', async (req, res) => {
     const { tieude_blog, img, content, tieude, img_blog, keywords, urlBase } =
       req.body
 
-    const tieude_khongdau = unicode(tieude_blog)
+    const tieude_khongdau1 = unicode(tieude_blog)
+    const tieude_khongdau = removeSpecialChars(tieude_khongdau1)
     const blog = new myMDBlog.blogModel({
       tieude_blog,
       img_blog,
@@ -1157,7 +1163,7 @@ router.post('/editblog/:idblog', async (req, res) => {
         if (img[index]) {
           nd.img = img[index]
         }
-          nd.tieude = tieude[index]
+        nd.tieude = tieude[index]
       })
 
       for (let i = blog.noidung.length; i < content.length; i++) {
@@ -1201,7 +1207,6 @@ router.post('/editblog/:idblog', async (req, res) => {
   }
 })
 
-
 router.post('/deleteblog/:idblog', async (req, res) => {
   try {
     const idblog = req.params.idblog
@@ -1216,7 +1221,6 @@ router.post('/deleteblog/:idblog', async (req, res) => {
 router.get('/cart', async (req, res) => {
   res.render('cart')
 })
-
 
 router.get('/detail', async (req, res) => {
   res.render('detail')
