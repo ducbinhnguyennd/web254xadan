@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Sp = require('../models/chitietSpModel')
 const LoaiSP = require('../models/tenSpModel')
+const uploads = require('./upload')
 const multer = require('multer')
 var myMDBlog = require('../models/blog.model')
 const checkAuth = require('../controllers/checkAuth')
@@ -1090,6 +1091,85 @@ router.post('/postblog', async (req, res) => {
     console.error(error)
     res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
   }
+})
+router.post(
+  '/postblog2',
+  uploads.fields([
+    { name: 'imgblog', maxCount: 1 }, // Một ảnh duy nhất
+    { name: 'img', maxCount: 100000 } // Nhiều ảnh (có thể điều chỉnh số lượng tối đa)
+  ]),
+  async (req, res) => {
+    try {
+      const { tieude_blog, content, tieude, keywords, urlBase } = req.body
+
+      // Xác định domain
+      const domain = 'https://www.giahuystore.com' // Thay đổi thành domain của bạn
+
+      // Lấy tên file ảnh từ req.files và thêm domain vào trước tên file
+      const imgblog = req.files['imgblog']
+        ? `${domain}/${req.files['imgblog'][0].filename}`
+        : null
+      const img = req.files['img']
+        ? req.files['img'].map(file => `${domain}/${file.filename}`)
+        : []
+
+      const tieude_khongdau1 = unicode(tieude_blog)
+      const tieude_khongdau = removeSpecialChars(tieude_khongdau1)
+
+      const blog = new myMDBlog.blogModel({
+        tieude_blog,
+        img_blog: imgblog, // URL ảnh đơn
+        tieude_khongdau
+      })
+
+      // Thêm các nội dung blog
+      if (
+        Array.isArray(content) &&
+        Array.isArray(tieude) &&
+        Array.isArray(keywords) &&
+        Array.isArray(urlBase)
+      ) {
+        for (let i = 0; i < content.length; i++) {
+          const updatedContent = replaceKeywordsWithLinks(
+            content[i],
+            keywords[i],
+            urlBase[i]
+          )
+
+          blog.noidung.push({
+            content: updatedContent,
+            img: img[i] || null, // Sử dụng ảnh từ mảng hoặc null nếu không có
+            tieude: tieude[i],
+            keywords: keywords[i],
+            urlBase: urlBase[i]
+          })
+        }
+      } else {
+        const updatedContent = replaceKeywordsWithLinks(
+          content,
+          keywords,
+          urlBase
+        )
+
+        blog.noidung.push({
+          content: updatedContent,
+          img: img[0] || null, // Nếu chỉ có một ảnh, chọn ảnh đầu tiên hoặc null
+          tieude,
+          keywords,
+          urlBase
+        })
+      }
+
+      await blog.save()
+      res.redirect('/main')
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ message: `Đã xảy ra lỗi: ${error}` })
+    }
+  }
+)
+router.get('/getaddblogtest', async (req, res) => {
+  res.render('test')
 })
 
 router.get('/getaddblog', async (req, res) => {

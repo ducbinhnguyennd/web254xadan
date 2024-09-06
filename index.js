@@ -46,6 +46,7 @@ app.use('/', settingsRouter)
 app.use('/', apinewsanpham)
 
 app.use(express.static(path.join(__dirname, '/public')))
+app.use(express.static(path.join(__dirname, '/uploads')))
 
 // // Middleware để log địa chỉ IP của máy khách
 // app.use((req, res, next) => {

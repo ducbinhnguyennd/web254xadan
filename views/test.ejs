@@ -1,96 +1,63 @@
-<html lang="en">
+<%- include('../include/header.ejs') %>
+    <div class="container">
+        <h2>
+            <a href="/"><img style="width: 35px;" src="https://cdn-icons-png.flaticon.com/512/25/25694.png"></a> Thêm sản phẩm</h2>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Code Scanner</title>
-    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-    <style>
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: black;
-        }
-        
-        #qr-reader {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-        
-        .qr-box {
-            position: absolute;
-            border: 2px dashed red;
-            /* Đường viền cho vùng quét */
-            width: 300px;
-            height: 150px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        
-        .scan-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: red;
-            /* Màu đường kẻ */
-        }
-        
-        #result {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            font-size: 1.5rem;
-            color: white;
-        }
-    </style>
-</head>
+        <form action="/postblog2" method="post" enctype="multipart/form-data">
+            <br>
+            <label class="form-label">Tiêu đề Blog</label>
+            <input type="text" name="tieude_blog" class="form-control" placeholder="Nhập tiêu đề blog"><br>
+            <label class="form-label">Ảnh Blog</label>
+            <input type="file" name="imgblog" class="form-control" placeholder="Nhập link ảnh blog"><br>
+            <h5>Nội Dung</h5>
+            <div id="blogContainer">
+                <div class="noidung">
+                    <label class="form-label"> Tiêu đề nội dung</label>
+                    <input type="text" name="tieude" class="form-control" placeholder="Nhập tiêu đề nội dung Blog"><br>
+                    <label class="form-label">Nội dung</label>
+                    <input type="text" name="content" class="form-control" placeholder="Nhập nội dung Blog"><br>
+                    <label class="form-label">Từ khóa</label>
+                    <input type="text" name="keywords" class="form-control" placeholder="Nhập từ khóa"><br>
+                    <label class="form-label">Link từ khóa</label>
+                    <input type="text" name="urlBase" class="form-control" placeholder="Nhập link từ khóa"><br>
+                    <div class="mb-3">
+                        <label for="formFileMultiple" class="form-label">Ảnh Blog</label>
+                        <input class="form-control" type="file" name="img" id="formFileMultiple" placeholder="Nhập link ảnh" multiple>
+                    </div>
+                </div>
+            </div>
+            <input type="button" class="btn btn-danger" value="Thêm nội dung blog" onclick="themnoidung()">
+            <button class="btn btn-danger" type="submit">Lưu</button>
+        </form>
+        <script>
+            function themnoidung() {
+                var newDiv = document.createElement("div");
+                newDiv.className = "noidung";
 
-<body>
-    <div id="qr-reader">
-        <div class="qr-box"></div>
-        <!-- Khung vùng quét -->
-        <div class="scan-line"></div>
-        <!-- Đường kẻ quét -->
+                // Thêm nội dung vào thẻ div mới
+                newDiv.innerHTML = `
+              <label class="form-label"> Tiêu đề nội dung</label>
+                        <input type="text" name="tieude" class="form-control" placeholder="Nhập tiêu đề nội dung Blog"><br>
+                        <label class="form-label">Nội dung</label>
+                        <input type="text" name="content" class="form-control" placeholder="Nhập nội dung Blog"><br>
+                        <label class="form-label">Từ khóa</label>
+                        <input type="text" name="keywords" class="form-control" placeholder="Nhập từ khóa"><br>
+                        <label class="form-label">Link từ khóa</label>
+                        <input type="text" name="urlBase" class="form-control" placeholder="Nhập link từ khóa"><br>
+                        <div class="mb-3">
+                            <label for="formFileMultiple" class="form-label">Ảnh Blog</label>
+                            <input class="form-control" type="file" name="img" id="formFileMultiple" placeholder="Nhập link ảnh" multiple>
+                        </div>
+    <button style="margin-bottom:5px" type="button" class="btn btn-danger" onclick="xoanoidung(this)">Xóa Thẻ</button>
+`;
+
+                // Thêm thẻ div mới vào trong container
+                document.getElementById("blogContainer").appendChild(newDiv);
+            }
+
+            function xoanoidung(button) {
+                // Xóa thẻ div chứa nút bấm
+                button.parentElement.remove();
+            }
+        </script>
     </div>
-    <div id="result"></div>
-
-
-    <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            document.getElementById('result').innerHTML = `<p>Code scanned = ${decodedText},${decodedResult}</p>`
-            document.getElementById('qr-reader').style.display = 'none'
-        }
-        var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", {
-                fps: 120,
-                qrbox: 300,
-                facingMode: {
-                    exact: "environment"
-                }, // Sử dụng camera sau
-                videoConstraints: {
-                    width: {
-                        ideal: 1280
-                    }, // Độ rộng video
-                    height: {
-                        ideal: 720
-                    }, // Độ cao video
-                    facingMode: "environment" // Sử dụng camera môi trường
-                }
-            });
-        html5QrcodeScanner.render(onScanSuccess);
-    </script>
-</body>
-
-</html>
