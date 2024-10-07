@@ -316,16 +316,16 @@ router.get('/getspchitiet/:nameloaisp', async (req, res) => {
     const sp = await Promise.all(
       allsp.map(async s => {
         let img
-        if (s.name === 'iPhone 13 Pro Max') {
+        if (s.name === '13 PRO MAX') {
           img = 'https://giahuystore.com/img/iphone13.png'
         }
-        if (s.name === 'iPhone 12 Pro Max') {
+        if (s.name === '12 PRO MAX') {
           img = 'https://giahuystore.com/img/iphone12.jpg'
         }
-        if (s.name === 'iPhone 14 Pro Max') {
+        if (s.name === '14 PRO MAX') {
           img = 'https://giahuystore.com/img/iphone14.png'
         }
-        if (s.name === 'iPhone 11 Pro Max') {
+        if (s.name === '11 PRO MAX') {
           img = 'https://giahuystore.com/img/iphone11.jpg'
         }
         return {
